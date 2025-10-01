@@ -3,7 +3,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 const Navbar = React.lazy(() => import("../Navbar/Navbar"));
-import background2 from "../../assets/Photos/background2.png";
+import background2 from "../../assets/Photos/BackGround2.png";
 import defultProductImage from "../../assets/Photos/defultProductImage.jpg";
 import { API_BASE_URL } from "../../../config";
 import { useQuery } from "@tanstack/react-query";
