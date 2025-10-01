@@ -41,7 +41,6 @@ export default function AddCustomerModal() {
     const formData = new FormData();
     formData.append("company", valus.company);
     formData.append("logo", valus.logo);
-    formData.append("status", valus.status);
     formData.append("default_price_type", valus.default_price_type);
 
     addCustomerMutation.mutate(formData);
@@ -57,7 +56,6 @@ export default function AddCustomerModal() {
     formData.append("email", formValue.email);
     formData.append("company", formValue.company);
     formData.append("logo", formValue.logo);
-    formData.append("status", formValue.status);
     formData.append("default_price_type", formValue.default_price_type);
 
     return axios

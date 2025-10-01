@@ -68,7 +68,7 @@ export default function AddBrands({ open, onOpenChange }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger className="bg-white flex items-center gap-2 mt-2 text-[#1243AF] px-8 py-1 rounded-md cursor-pointer hover:bg-gray-300 duration-300 transition-all me-6">
-        Add Brand <FaPlus className="text-sm" />
+        Add  <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       <Dialog.Portal>
