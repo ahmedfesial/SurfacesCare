@@ -112,7 +112,7 @@ export default function Login() {
                     htmlFor="email"
                     className="text-black font-semibold textColor"
                   >
-                    Email Address شاشيشي
+                    Email Address
                   </label>
                   <input
                     onChange={formik.handleChange}

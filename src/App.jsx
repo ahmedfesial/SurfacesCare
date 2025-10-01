@@ -26,7 +26,7 @@ const Main = React.lazy(()=> import('./components/Main/Main'))
 const ToDoList = React.lazy(()=> import('./components/ToDoList/ToDoList'))
 const SubProductsDetails = React.lazy(()=> import('./components/SubProductsDetails/SubProductsDetails')) 
 const CreateProduct = React.lazy(()=> import('./components/ProductManagement/CreateProduct/CreateProduct'))
-const MainCatgory = React.lazy(()=> import('./components/MainCatgory/MainCatgory'))
+const MainCategory = React.lazy(()=> import('./components/MainCatgory/MainCatgory'))
 const SubCategory = React.lazy(()=> import('./components/SubCategory/SubCategory'))
 const AllMainCategory = React.lazy(()=> import('./components/OurProducts/AllMainCategory/AllMainCategory'))
 const AllSubCategory = React.lazy(()=> import('./components/OurProducts/AllSubCategory/AllSubCategory'))
@@ -76,7 +76,7 @@ function App() {
       {path : 'Main' , element : <ProductRoute> <Main/> </ProductRoute>},
       {path : 'CreateProduct/:id' , element : <ProductRoute> <CreateProduct/> </ProductRoute>},
       {path : 'CreateProduct' , element : <ProductRoute> <CreateProduct/> </ProductRoute>},
-      {path : 'MainCategory/:brandId' , element : <ProductRoute> <MainCatgory/> </ProductRoute>},
+      {path : 'MainCategory/:brandId' , element : <ProductRoute> <MainCategory/> </ProductRoute>},
       {path : 'SubCategory/:SubID' , element : <ProductRoute> <SubCategory/> </ProductRoute>},
       {path : 'AllMainCategory/:brandsId' , element :  <AllMainCategory/>},
       {path : 'AllSubCategory/:SubID' , element :  <AllSubCategory/>},
