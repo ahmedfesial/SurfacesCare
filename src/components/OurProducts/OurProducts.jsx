@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { FiShoppingBag } from "react-icons/fi";
 
 export default function OurProducts() {
+
+  
   return (
     <>
       <Navbar />

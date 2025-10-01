@@ -11,7 +11,7 @@ export default function AllBrandsMain() {
     return axios.get(`${API_BASE_URL}brands`);
   }
 
-  let { data, isLoading, isError, error } = useQuery({
+  let { data, isLoading  } = useQuery({
     queryKey: ["AllCategories"],
     queryFn: getAllCategories,
     select: (data) => {
@@ -20,7 +20,6 @@ export default function AllBrandsMain() {
     },
   });
 
-  console.log(data);
 
   // is Loading
   if (isLoading) {
@@ -31,14 +30,6 @@ export default function AllBrandsMain() {
     );
   }
 
-  // Hnadle Error
-  if (isError) {
-    return (
-      <div>
-        <h1 className="text-center font-bold">{error}</h1>
-      </div>
-    );
-  }
 
   return (
     <section>
