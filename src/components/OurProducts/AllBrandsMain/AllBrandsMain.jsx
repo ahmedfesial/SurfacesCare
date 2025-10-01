@@ -19,6 +19,8 @@ export default function AllBrandsMain() {
       return allBrands.filter((brand) => brand.status === 1);
     },
   });
+  console.log(data);
+  
 
 
   // is Loading

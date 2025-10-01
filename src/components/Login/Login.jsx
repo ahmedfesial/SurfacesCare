@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import logo from "../../assets/Photos/NewLogo2.png";
 import BackGround from "../../assets/Photos/backgroundNavbar.jpg";
-import { FaLongArrowAltRight } from "react-icons/fa";
+import { FaLongArrowAltRight, FaSpinner } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../../../config";
 import toast from "react-hot-toast";
-import { FaSpinner } from "react-icons/fa";
 
 export default function Login() {
-  const navigate = useNavigate(); // path
+  const navigate = useNavigate(); 
 
-  const [isLoading, setisLoading] = useState(false); //spinner
-  const [apiError, setApiError] = useState(""); //Handle Error
+  const [isLoading, setisLoading] = useState(false); 
+  const [apiError, setApiError] = useState(""); 
 
   // Call Login
   function handleLogin(formvalue) {
     setisLoading(true);
-    setApiError(""); // Clear previous errors
+    setApiError(""); 
 
     axios
       .post(`${API_BASE_URL}login`, formvalue, {
@@ -30,6 +29,8 @@ export default function Login() {
           const user = data.user;
           toast.success("Login successful");
           navigate("/Main");
+
+          // Save user data
           localStorage.setItem("userToken", data.token);
           localStorage.setItem(
             "userData",
@@ -48,7 +49,6 @@ export default function Login() {
         toast.error(errorMessage);
         setApiError(errorMessage);
         console.log(error);
-        
       })
       .finally(() => {
         setisLoading(false);
@@ -61,7 +61,7 @@ export default function Login() {
     password: Yup.string().required("Password is required"),
   });
 
-  // get Data from user
+  // Formik
   let formik = useFormik({
     initialValues: {
       email: "",
