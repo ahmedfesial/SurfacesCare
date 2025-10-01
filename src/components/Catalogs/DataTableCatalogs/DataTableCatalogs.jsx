@@ -23,7 +23,7 @@ export default function DataTableCatalogs() {
     });
   }
 
-  let { data, isLoading, isError, error } = useQuery({
+  let { data, isLoading } = useQuery({
     queryKey: ["AllCatalogs"],
     queryFn: getAllCatalog,
     select: (data) => data.data.data,
@@ -70,15 +70,6 @@ export default function DataTableCatalogs() {
     );
   }
 
-  // Hnadle Error
-
-  if (isError) {
-    return (
-      <div>
-        <h1 className="text-center font-bold">{error}</h1>
-      </div>
-    );
-  }
 
   return (
     <>

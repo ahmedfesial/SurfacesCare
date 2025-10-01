@@ -67,7 +67,7 @@ export default function ActionNavbar() {
         toast.success("Catalog Generated Successfully");
         const fileUrl = res.data.file_url.startsWith("http")
           ? res.data.file_url
-          : `http://127.0.0.1:8000/api${res.data.file_url}`;
+          : `https://muhjiblaravel-production.up.railway.app/api${res.data.file_url}`;
         window.open(fileUrl, "_blank");
       })
       .catch((err) => {
