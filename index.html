@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"> <!-- خليها en كـ default -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surfaces</title>
+
+    <!-- Cairo (Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet"> 
+
+    <!-- Be Vietnam Pro (English) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&display=swap" rel="stylesheet"> 
+
+    <style>
+      body {
+        background-color: #F9F9F9;
+        font-weight: 300;
+      }
+
+      /* النص العربي */
+      :lang(ar) {
+        font-family: "Cairo", sans-serif;
+      }
+
+      /* النص الإنجليزي */
+      :lang(en) {
+        font-family: "Be Vietnam Pro", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+    </div>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

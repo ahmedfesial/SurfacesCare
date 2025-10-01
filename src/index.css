@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+
+body {
+  background-color: #F9F9F9;
+  font-weight: 300;
+}
+
+/* النص العربي */
+body:lang(ar) {
+  font-family: "Cairo", sans-serif;
+}
+
+/* النص الإنجليزي */
+body:lang(en) {
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+.active{
+    color: white;
+    background-color: #1243AF;
+    border-radius: 7px;
+    padding: 4px 2px;
+    text-align-last:right ;
+}
+
+@keyframes backgroundMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 100%;
+    }
+  }
+
+  .animate-backgroundMove {
+    background-size: 150% auto;
+    animation: backgroundMove 70s linear infinite;
+  }
+
+.textColor{
+  color: #1243AF;
+}  
+
+.backGroundColor{
+  background-color: #1243AF;
+}
