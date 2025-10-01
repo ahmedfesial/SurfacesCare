@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 const Navbar = React.lazy(() => import("../../Navbar/Navbar"));
 const Footer = React.lazy(() => import("../../Footer/Footer"));
-import background2 from "../../../assets/Photos/Background2.png";
+import background2 from "../../../assets/Photos/BackGround2.png";
 import defultProductImage from "../../../assets/Photos/defultProductImage.jpg";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
