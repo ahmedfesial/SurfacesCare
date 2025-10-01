@@ -3,7 +3,7 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import SustainabilityPhoto from "../../assets/Photos/Sustainability.jpg";
 import NewBackGround from "../../assets/Photos/NewBackGround.jpeg";
-import Icon from "../../assets/Photos/ICon.png";
+import Icon from "../../assets/Photos/Icon.png";
 import foglia from "../../assets/Photos/foglia.png";
 import FoglieBackGround from "../../assets/Photos/FoglieBackGround.jpg";
 
