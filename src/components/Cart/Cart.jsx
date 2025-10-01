@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import background2 from "../../assets/Photos/background2.png";
+import background2 from "../../assets/Photos/Background2.png";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
 import { API_BASE_URL } from "../../../config";

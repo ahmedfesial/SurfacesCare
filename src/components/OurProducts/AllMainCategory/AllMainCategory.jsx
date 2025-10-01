@@ -1,7 +1,7 @@
 import React from "react";
 const Navbar = React.lazy(() => import("../../Navbar/Navbar"));
 const Footer = React.lazy(() => import("../../Footer/Footer"));
-import background2 from "../../../assets/Photos/background2.png";
+import background2 from "../../../assets/Photos/Background2.png";
 
 import StaticPhoto from "../../../assets/Photos/StaticPhoto.jpg";
 import { FaArrowDownLong } from "react-icons/fa6";
