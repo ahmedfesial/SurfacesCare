@@ -7,7 +7,7 @@ import tissue from "../../assets/Photos/tissue-bg.jpg";
 import Asset from "../../assets/Photos/Asset.png";
 import bucket from "../../assets/Photos/BackGroundTrust.jpeg";
 import trust from "../../assets/Photos/trust.png";
-import background2 from "../../assets/Photos/background2.png";
+import background2 from "../../assets/Photos/Background2.png";
 import { LuBox } from "react-icons/lu";
 import { FaArrowDownLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
