@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BackGround from "../../assets/Photos/backgroundNavbar.jpg";
-import logo from "../../assets/Photos/Newlogo2.png";
+import logo from "../../assets/Photos/NewLogo2.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";

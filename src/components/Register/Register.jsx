@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../assets/Photos/Newlogo2.png";
+import logo from "../../assets/Photos/NewLogo2.png";
 import BackGround from "../../assets/Photos/backgroundNavbar.jpg";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { useFormik } from "formik";
