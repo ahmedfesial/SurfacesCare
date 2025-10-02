@@ -175,6 +175,7 @@ export default function AddBrands({ open, onOpenChange }) {
 
                   {/* Short Descriptions */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
+                     <div className="flex">
                     <div className="flex flex-col w-full md:w-1/2">
                       <label htmlFor="short_description_en">
                         Short Description EN
@@ -205,6 +206,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="مثلا شركة العناية بالاسطح"
                       />
                     </div>
+                     </div>     
                   </div>
 
                   {/* Long Descriptions */}
