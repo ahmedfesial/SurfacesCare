@@ -112,7 +112,10 @@ export default function CreateProducts() {
         formData.append(key, val);
       }
     });
+    
     console.log("Submitting...");
+    console.log("TOKEN =>", localStorage.getItem("userToken"))
+    console.log("TOKEN =>", token)
     axios
       .post(`${API_BASE_URL}products/create`, formData, {
         withCredentials: true,
