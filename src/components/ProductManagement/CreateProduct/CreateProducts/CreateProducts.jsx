@@ -116,6 +116,9 @@ export default function CreateProducts() {
     axios
       .post(`${API_BASE_URL}products/create`, formData, {
         withCredentials: true,
+        headers: {
+        Authorization: `Bearer ${token}`,
+        },
       })
       .then(() => {
         toast.success("Create Produtc success");

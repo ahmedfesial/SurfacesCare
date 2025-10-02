@@ -22,8 +22,6 @@ export default function ChartTemplates() {
     select: (data) => data.data.mostPreferredTemplates,
   });
 
-   
-
   const fallbackData = [{ name: "No Data", value: 1 }];
 
   return (
@@ -33,13 +31,14 @@ export default function ChartTemplates() {
           Most Prefered Templates
         </p>
         <div className="flex justify-center items-center mt-8">
-          <ResponsiveContainer width="100%" height={240}>
+          <ResponsiveContainer width="90%" height={240}>
             <PieChart>
               <Pie
                 data={Template && Template.length > 0 ? Template : fallbackData}
                 innerRadius={80}
                 outerRadius={120}
-                TemplateKey="value"
+                dataKey="value"
+                nameKey="name"
               >
                 {(Template && Template.length > 0
                   ? Template
@@ -55,6 +54,7 @@ export default function ChartTemplates() {
                   />
                 ))}
               </Pie>
+
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
@@ -67,7 +67,16 @@ export default function ChartTemplates() {
               <div key={i}>
                 <div className="mt-13 flex justify-between items-center border-b-1 border-gray-300 pb-1">
                   <div className="flex items-center gap-1">
-                    <div className="w-[10px] h-[10px] rounded-full bg-[#11ADD1]"></div>
+                    <div
+                      className="w-[10px] h-[10px] rounded-full"
+                      style={{
+                        backgroundColor:
+                          Template && Template.length > 0
+                            ? COLORS[i % COLORS.length]
+                            : "#1243AF",
+                      }}
+                    ></div>
+
                     <p>{template.name.split(" ").slice(0, 4).join(" ")}</p>
                   </div>
                   <p className="text-[#9A9A9A] pe-2">{template.percentage}%</p>
