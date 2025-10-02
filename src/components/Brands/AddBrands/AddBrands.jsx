@@ -113,6 +113,8 @@ export default function AddBrands({ open, onOpenChange }) {
                 <div className="space-y-4">
                   {/* Logo + Name EN/AR */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
+
+                    {/* Logo */}
                     <div className="w-full md:w-[30%] flex flex-col gap-2">
                       <p className="textColor text-sm">Logo</p>
                       <label
@@ -137,6 +139,8 @@ export default function AddBrands({ open, onOpenChange }) {
                         className="hidden"
                       />
                     </div>
+                     
+                    {/* Name EN */}
                     <div className="flex flex-col w-full md:w-[35%]">
                       <label htmlFor="name_en"> Name EN</label>
                       <input
@@ -150,7 +154,9 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="Name EN"
                       />
                     </div>
-                    <div className="flex flex-col w-full md:w-[35%] text-left md:text-right">
+
+                    {/* Name AR */}
+                    <div className="flex flex-col w-full md:w-[35%] text-left md:text-right mt-1">
                       <label className="text-sm" htmlFor="name_ar">
                         الاسم عربى
                       </label>
@@ -203,7 +209,6 @@ export default function AddBrands({ open, onOpenChange }) {
 
                   {/* Long Descriptions */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
-                    <div className="flex flex-col w-full md:w-1/2">
                       <label htmlFor="full_description_en">
                         Long Description EN
                       </label>
@@ -217,10 +222,8 @@ export default function AddBrands({ open, onOpenChange }) {
                         className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
                         placeholder="For Example , Surfaces care company...."
                       />
-                    </div>
-                    <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
-                      <div className="flex flex-col w-full md:w-1/2">
 
+                    <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
                       <label htmlFor="full_description_ar" className="text-sm">
                         الوصف عربى
                       </label>
@@ -235,7 +238,6 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="الوصف المختصر عربى"
                         />
                       </div>
-                    </div>
                   </div>
 
                   {/* Cover + Color */}
