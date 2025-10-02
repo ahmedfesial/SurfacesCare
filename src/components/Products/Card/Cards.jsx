@@ -18,9 +18,10 @@ export default function Cards({ filteredProducts }) {
   const token = localStorage.getItem("userToken");
   const location = useLocation();
   // eslint-disable-next-line no-unused-vars
-  const { selectedBasket, setSelectedBasket, submitMode } =
+  const { selectedBasket, setSelectedBasket, submitMode  , increaseQuantity, decreaseQuantity } =
     useContext(CartContext);
-
+  const [localQuantities, setLocalQuantities] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState({});
   const [addedByBasket, setAddedByBasket] = useState({});
   const [basketProductIds, setBasketProductIds] = useState([]);
@@ -168,16 +169,27 @@ export default function Cards({ filteredProducts }) {
 
   // حذف منتج
   const removeProductFromBasket = useCallback(
-    async (productId) => {
-      if (!basketId) {
-        toast.error("Please Select Basket First!");
-        return;
-      }
+  async (productId) => {
+    if (!basketId) {
+      toast.error("Please Select Basket First!");
+      return;
+    }
 
-      const currentBasketProducts = addedByBasket[basketId] || [];
-      const item = currentBasketProducts.find((p) => p.productId === productId);
+    const currentBasketProducts = addedByBasket[basketId] || [];
+    const item = currentBasketProducts.find((p) => p.productId === productId);
 
-      // تحديث الحالة المحلية فوراً
+    if (!item) {
+      toast.error("Product not found in this basket!");
+      return;
+    }
+
+    try {
+      // 🔥 استدعاء API الحذف
+      await axios.delete(`${API_BASE_URL}basket-products/delete/${item.basketProductId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // ✅ تحديث الحالة محليًا بعد نجاح الحذف
       const updatedProducts = currentBasketProducts.filter(
         (p) => p.productId !== productId
       );
@@ -191,53 +203,54 @@ export default function Cards({ filteredProducts }) {
         return next;
       });
 
-      setBasketProductIds(updatedProducts.map((m) => m.productId));
+      setBasketProductIds((prev) => prev.filter((id) => id !== productId));
 
-      if (!item) return;
+      toast.success("Product removed from basket!");
+    } catch (error) {
+      toast.error("Failed to remove product from basket!");
+      console.error(error);
+    }
+  },
+  [basketId, addedByBasket, token]
+);
 
-      // إذا كان المنتج مؤقت، لا نحتاج لحذفه من API
-      if (item.basketProductId.startsWith("temp_")) {
-        toast.success("Delete Product from Basket");
-        return;
-      }
 
-      try {
-        await axios.delete(
-          `${API_BASE_URL}basket-products/delete/${item.basketProductId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        toast.success("Delete Product from Basket");
-      } catch {
-        // في حالة فشل API، نعيد المنتج
-        setAddedByBasket((prev) => {
-          const restored = [...(prev[basketId] || []), item];
-          const next = { ...prev, [basketId]: restored };
-          localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(restored));
-          return next;
-        });
-        setBasketProductIds([
-          ...updatedProducts.map((m) => m.productId),
-          productId,
-        ]);
-        toast.error("Error Remove Product");
-      }
-    },
-    [basketId, addedByBasket, token]
-  );
 
   // Quantity Controls
-  function increaseProductQuantity(productId) {
-    setProducts((prev) => ({
-      ...prev,
-      [productId]: (prev[productId] || 1) + 1,
-    }));
+   function handleIncrease(productId) {
+    increaseQuantity(productId)
+      .then(() => {
+        setLocalQuantities((prev) => ({
+          ...prev,
+          [productId]: (prev[productId] ?? 1) + 1,
+        }));
+        toast.success("Item quantity updated (+1)");
+      })
+      .catch(() => {
+        toast.error("Error");
+      });
   }
-  function decreaseProductQuantity(productId) {
-    setProducts((prev) => ({
-      ...prev,
-      [productId]: prev[productId] > 1 ? prev[productId] - 1 : 1,
-    }));
+
+
+
+  function handleDecrease(productId) {
+    decreaseQuantity(productId)
+      .then(() => {
+        setLocalQuantities((prev) => {
+          const current = prev[productId] ?? 1;
+          return {
+            ...prev,
+            [productId]: current > 1 ? current - 1 : 1,
+          };
+        });
+        toast.success("Item quantity updated (-1)");
+      })
+      .catch(() => {
+        toast.error("Error");
+      });
   }
+
+
 
   if (isLoading) {
     return (
@@ -337,27 +350,42 @@ export default function Cards({ filteredProducts }) {
 
                       <div className="py-1 flex items-center justify-center">
                         <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            decreaseProductQuantity(product.id);
-                          }}
-                          className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center me-2 text-sm font-medium h-8 py-4 w-8 rounded-lg hover:scale-110 transition-all duration-300"
+                          onClick={() => handleDecrease(product.id)}
+                          className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center me-2 text-sm font-medium h-6 py-4 w-6 rounded-lg hover:scale-110 transition-all duration-300"
                         >
-                          -
+                          <svg
+                            className="w-3 h-3 font-bold"
+                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 18 2"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          >
+                            <path d="M1 1h16" />
+                          </svg>
                         </button>
 
                         <span className="textColor">
-                          {products?.[product.id] ?? 1}
+                          {localQuantities[product.id] ?? product.quantity ?? 1}
                         </span>
 
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            increaseProductQuantity(product.id);
-                          }}
-                          className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center ms-2 text-sm font-medium h-8 py-4 w-8 rounded-lg hover:scale-110 transition-all duration-300"
+                         <button
+                          onClick={() => handleIncrease(product.id)}
+                          className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center ms-2 text-sm font-medium h-6 py-4 w-6 rounded-lg hover:scale-110 transition-all duration-300"
                         >
-                          +
+                          <svg
+                            className="w-3 h-3"
+                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 18 18"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M9 1v16M1 9h16" />
+                          </svg>
                         </button>
                       </div>
                     </div>

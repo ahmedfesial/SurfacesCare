@@ -79,7 +79,6 @@ export default function Cart() {
     }
   };
 
-  // زيادة الكمية
   function handleIncrease(productId) {
     increaseQuantity(productId)
       .then(() => {
@@ -93,7 +92,8 @@ export default function Cart() {
         toast.error("Error");
       });
   }
-  // تقليل الكمية
+
+
   function handleDecrease(productId) {
     decreaseQuantity(productId)
       .then(() => {
@@ -193,6 +193,7 @@ export default function Cart() {
                         <span className="py-1 rounded-md me-4 text-lg border w-[60%] text-center">
                           Selected
                         </span>
+                        
                         <button
                           onClick={() => handleDecrease(product.id)}
                           className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center me-2 text-sm font-medium h-6 py-4 w-6 rounded-lg hover:scale-110 transition-all duration-300"
