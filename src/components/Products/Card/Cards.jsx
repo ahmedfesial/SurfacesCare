@@ -335,6 +335,7 @@ export default function Cards({ filteredProducts }) {
                           if (!isAdded) {
                             addProductToBasket(product.id, count);
                           } else {
+                            e.preventDefault();
                             removeProductFromBasket(product.id);
                           }
                         }}
@@ -350,7 +351,7 @@ export default function Cards({ filteredProducts }) {
 
                       <div className="py-1 flex items-center justify-center">
                         <button
-                          onClick={() => handleDecrease(product.id)}
+                          onClick={(e) => {handleDecrease(product.id) , e.preventDefault()}}
                           className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center me-2 text-sm font-medium h-6 py-4 w-6 rounded-lg hover:scale-110 transition-all duration-300"
                         >
                           <svg
@@ -371,7 +372,7 @@ export default function Cards({ filteredProducts }) {
                         </span>
 
                          <button
-                          onClick={() => handleIncrease(product.id)}
+                          onClick={(e) =>{ handleIncrease(product.id) , e.preventDefault() }}
                           className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center ms-2 text-sm font-medium h-6 py-4 w-6 rounded-lg hover:scale-110 transition-all duration-300"
                         >
                           <svg
