@@ -40,7 +40,7 @@ export default function ChartTemplates() {
                 data={Template && Template.length > 0 ? Template : fallbackData}
                 innerRadius={80}
                 outerRadius={120}
-                dataKey="value"
+                dataKey="percentage"
                 nameKey="name"
               >
                 {(Template && Template.length > 0
