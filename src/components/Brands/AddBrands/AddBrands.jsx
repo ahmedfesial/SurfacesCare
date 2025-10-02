@@ -74,7 +74,7 @@ export default function AddBrands({ open, onOpenChange }) {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-[#1243AF]/50 z-50" />
         <Dialog.Content
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-xl w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto z-50"
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-xl w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto z-50"
           // ده هو اللي بيقفل لو ضغطت برا أو ESC
           onPointerDownOutside={() => onOpenChange?.(false)}
           onEscapeKeyDown={() => onOpenChange?.(false)}
@@ -117,7 +117,7 @@ export default function AddBrands({ open, onOpenChange }) {
                       <p className="textColor text-sm">Logo</p>
                       <label
                         htmlFor="file-upload"
-                        className="textColor border p-2 rounded-xl flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
+                        className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
                       >
                         <div className="flex justify-center items-center w-full">
                           <MdOutlineFileUpload className="text-lg" />
@@ -146,7 +146,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         onBlur={formik.handleBlur}
                         name="name_en"
                         type="text"
-                        className="border my-1 p-1.5 rounded-xl w-full"
+                        className="border my-1 p-1.5 rounded-md w-full"
                         placeholder="Name EN"
                       />
                     </div>
@@ -161,7 +161,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         value={formik.values.name_ar}
                         onBlur={formik.handleBlur}
                         type="text"
-                        className="border my-1 p-1.5 rounded-xl text-right w-full"
+                        className="border my-1 p-1.5 rounded-md text-right w-full"
                         placeholder="الاسم عربى"
                       />
                     </div>
@@ -180,7 +180,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.short_description_en}
-                        className="border my-1 pt-1 ps-2 rounded-xl text-sm w-full placeholder:pt-2"
+                        className="border my-1 pt-1 ps-2 rounded-md text-sm w-full placeholder:pt-2"
                         placeholder="For Example , Surfaces care company...."
                       />
                     </div>
@@ -195,7 +195,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         value={formik.values.short_description_ar}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="border my-1 rounded-xl text-right text-sm pt-1 ps-2 w-full placeholder:p-2"
+                        className="border my-1 rounded-md text-right text-sm pt-1 ps-2 w-full placeholder:p-2"
                         placeholder="مثلا شركة العناية بالاسطح"
                       />
                     </div>
@@ -214,11 +214,13 @@ export default function AddBrands({ open, onOpenChange }) {
                         value={formik.values.full_description_en}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="border my-1 text-sm ps-2 pt-1 rounded-xl w-full"
+                        className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
                         placeholder="For Example , Surfaces care company...."
                       />
                     </div>
-                    <div className="flex flex-col w-full md:w-1/2 text-left md:text-right">
+                    <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
+                      <div className="flex flex-col w-full md:w-1/2">
+
                       <label htmlFor="full_description_ar" className="text-sm">
                         الوصف عربى
                       </label>
@@ -229,9 +231,10 @@ export default function AddBrands({ open, onOpenChange }) {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         rows={5}
-                        className="border my-1 rounded-xl text-right pt-1 ps-2 w-full"
+                        className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
                         placeholder="الوصف المختصر عربى"
-                      />
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -241,7 +244,7 @@ export default function AddBrands({ open, onOpenChange }) {
                       <p className="textColor text-sm">Cover</p>
                       <label
                         htmlFor="file-upload"
-                        className="textColor h-12 border p-2 rounded-xl flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
+                        className="textColor h-12 border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
                       >
                         <div className="flex justify-center items-center w-full">
                           <MdOutlineFileUpload className="text-lg" />
@@ -277,7 +280,7 @@ export default function AddBrands({ open, onOpenChange }) {
       {/* الزرار المخصص */}
       <label
         htmlFor="color_code"
-        className="cursor-pointer border w-full h-12 my-1 rounded-xl flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
+        className="cursor-pointer border w-full h-12 my-1 rounded-md flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
       >
         <div className="flex items-center gap-2">
           <FaPalette className="text-lg" />

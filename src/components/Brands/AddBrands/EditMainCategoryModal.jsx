@@ -140,7 +140,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
                 onBlur={formik.handleBlur}
                 name="name_en"
                 type="text"
-                className="border my-1 p-1.5 rounded-xl w-full"
+                className="border my-1 p-1.5 rounded-md w-full"
                 placeholder="Name EN"
               />
             </div>
@@ -155,7 +155,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
                 value={formik.values.name_ar}
                 onBlur={formik.handleBlur}
                 type="text"
-                className="border my-1 p-1.5 rounded-xl text-right w-full"
+                className="border my-1 p-1.5 rounded-md text-right w-full"
                 placeholder="الاسم عربى"
               />
             </div>
@@ -180,7 +180,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
                   accept="image/*"
                   onBlur={formik.handleBlur}
                   onChange={handleImageChange}
-                  className="border my-1 p-1.5 rounded-xl w-full"
+                  className="border my-1 p-1.5 rounded-md w-full"
                 />
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.color_code}
-                className="border w-full h-12 my-1 rounded-xl"
+                className="border w-full h-12 my-1 rounded-md"
               />
             </div>
           </div>

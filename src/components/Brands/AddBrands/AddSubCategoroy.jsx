@@ -76,7 +76,7 @@ export default function AddSubCategoroy() {
                 onBlur={formik.handleBlur}
                 name="name_en"
                 type="text"
-                className="border my-1 p-1.5 rounded-xl w-full"
+                className="border my-1 p-1.5 rounded-md w-full"
                 placeholder="Name EN"
               />
             </div>
@@ -91,7 +91,7 @@ export default function AddSubCategoroy() {
                 value={formik.values.name_ar}
                 onBlur={formik.handleBlur}
                 type="text"
-                className="border my-1 p-1.5 rounded-xl text-right w-full"
+                className="border my-1 p-1.5 rounded-md text-right w-full"
                 placeholder="الاسم عربى"
               />
             </div>

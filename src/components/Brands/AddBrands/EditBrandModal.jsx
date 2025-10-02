@@ -212,7 +212,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       )}
                       <label
                         htmlFor="edit-logo-upload"
-                        className="textColor border p-2 rounded-xl flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF] hover:text-white transition font-light w-full"
+                        className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF] hover:text-white transition font-light w-full"
                       >
                         <div className="flex justify-center items-center w-full">
                           <MdOutlineFileUpload className="text-lg" />
@@ -238,7 +238,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       onBlur={formik.handleBlur}
                       name="name_en"
                       type="text"
-                      className="border my-1 p-1.5 rounded-xl w-full"
+                      className="border my-1 p-1.5 rounded-md w-full"
                       placeholder="Name EN"
                     />
                   </div>
@@ -253,7 +253,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       value={formik.values.name_ar}
                       onBlur={formik.handleBlur}
                       type="text"
-                      className="border my-1 p-1.5 rounded-xl text-right w-full"
+                      className="border my-1 p-1.5 rounded-md text-right w-full"
                       placeholder="الاسم عربى"
                     />
                   </div>
@@ -272,7 +272,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.short_description_en}
-                      className="border my-1 pt-1 ps-2 rounded-xl text-sm w-full"
+                      className="border my-1 pt-1 ps-2 rounded-md text-sm w-full"
                       placeholder="For Example , Surfaces care company...."
                     />
                   </div>
@@ -287,7 +287,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       value={formik.values.short_description_ar}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className="border my-1 rounded-xl text-right text-sm pt-1 ps-2 w-full"
+                      className="border my-1 rounded-md text-right text-sm pt-1 ps-2 w-full"
                       placeholder="مثلا شركة العناية بالاسطح"
                     />
                   </div>
@@ -306,7 +306,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       value={formik.values.full_description_en}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      className="border my-1 text-sm ps-2 pt-1 rounded-xl w-full"
+                      className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
                       placeholder="For Example , Surfaces care company...."
                     />
                   </div>
@@ -321,7 +321,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       rows={5}
-                      className="border my-1 rounded-xl text-right pt-1 ps-2 w-full"
+                      className="border my-1 rounded-md text-right pt-1 ps-2 w-full"
                       placeholder="الوصف المختصر عربى"
                     />
                   </div>
@@ -346,7 +346,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                         accept="image/*"
                         onBlur={formik.handleBlur}
                         onChange={handleBackgroundChange}
-                        className="border my-1 p-1.5 rounded-xl w-full"
+                        className="border my-1 p-1.5 rounded-md w-full"
                       />
                     </div>
                   </div>
@@ -359,7 +359,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.color_code}
-                      className="border w-full h-12 my-1 rounded-xl"
+                      className="border w-full h-12 my-1 rounded-md"
                     />
                   </div>
                 </div>

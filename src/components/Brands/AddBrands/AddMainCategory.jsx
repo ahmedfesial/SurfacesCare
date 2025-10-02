@@ -87,7 +87,7 @@ export default function AddMainCategory() {
                 onBlur={formik.handleBlur}
                 name="name_en"
                 type="text"
-                className="border my-1 p-1.5 rounded-xl w-full"
+                className="border my-1 p-1.5 rounded-md w-full"
                 placeholder="Name EN"
               />
             </div>
@@ -102,7 +102,7 @@ export default function AddMainCategory() {
                 value={formik.values.name_ar}
                 onBlur={formik.handleBlur}
                 type="text"
-                className="border my-1 p-1.5 rounded-xl text-right w-full"
+                className="border my-1 p-1.5 rounded-md text-right w-full"
                 placeholder="الاسم عربى"
               />
             </div>
@@ -122,7 +122,7 @@ export default function AddMainCategory() {
                     event.currentTarget.files[0]
                   )
                 }
-                className="border my-1 p-1.5 rounded-xl w-full"
+                className="border my-1 p-1.5 rounded-md w-full"
               />
             </div>
             <div className="flex flex-col w-full md:w-1/2 mt-6">
@@ -141,7 +141,7 @@ export default function AddMainCategory() {
       {/* الزرار المخصص */}
       <label
         htmlFor="color_code"
-        className="cursor-pointer border w-full h-10 my-1 rounded-xl flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
+        className="cursor-pointer border w-full h-10 my-1 rounded-md flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
       >
         <div className="flex items-center gap-2">
           <FaPalette className="text-lg" />
