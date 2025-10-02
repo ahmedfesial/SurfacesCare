@@ -143,7 +143,7 @@ export default function AddCustomerModal() {
                       onBlur={formik.handleBlur}
                       name="company"
                       value={formik.values.company}
-                      className="textColor w-[85%] border-1 p-2 rounded-xl mx-auto focus:outline-none"
+                      className="textColor w-[85%] border-1 p-2 rounded-md mx-auto focus:outline-none"
                       placeholder="Customer Name"
                     />
                   </div>
@@ -155,7 +155,7 @@ export default function AddCustomerModal() {
                       <p className="textColor text-sm">Logo</p>
                       <label
                         htmlFor="file-upload"
-                        className="textColor border p-2 rounded-xl flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
+                        className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
                       >
                         <div className="flex justify-between items-center w-full">
                           <span>Upload Photo Type</span>
@@ -182,7 +182,7 @@ export default function AddCustomerModal() {
                         name="default_price_type"
                         value={formik.values.default_price_type}
                         onChange={formik.handleChange}
-                        className="w-full p-2 rounded-xl border"
+                        className="w-full p-2 rounded-md border"
                       >
                         <option value="">Select Price</option>
                         {Price?.map((price) => (
