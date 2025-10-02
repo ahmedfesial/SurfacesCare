@@ -112,7 +112,7 @@ export default function CreateProducts() {
         formData.append(key, val);
       }
     });
-
+    console.log("Submitting...");
     axios
       .post(`${API_BASE_URL}products/create`, formData, {
         withCredentials: true,
