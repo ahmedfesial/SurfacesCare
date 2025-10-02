@@ -34,8 +34,6 @@ export default function Dashboard() {
     select: (data) => data.data.data,
   });
 
-  
-
   const navigate = useNavigate();
 
   function logOut() {
@@ -45,20 +43,20 @@ export default function Dashboard() {
 
   return (
     <section
-  className="bg-[#F8F8F8] shadow-xl p-4 flex flex-col text-xs sm:text-sm md:text-base lg:text-lg 
+      className="bg-[#F8F8F8] shadow-xl p-4 flex flex-col justify-between items-end text-xs sm:text-sm md:text-base lg:text-lg 
   w-full md:w-[270px] md:h-screen lg:rounded-2xl lg:fixed lg:left-2 lg:top-2 lg:bottom-2 
   lg:h-[calc(100vh-16px)]"
->
-        {/* logo & Elements */}
+    >
+      {/* logo & Elements */}
       <div className="w-full md:w-auto md:ms-2 md:pt-4">
         {/* logo */}
-        <Link to={'/Main'}>
-        <img
-          src={logo}
-          alt="logo"
-          loading="lazy"
-          className="w-1/2 mx-auto block md:mx-0 md:w-[60%] md:ms-6 md:mt-6"
-        />
+        <Link to={"/Main"}>
+          <img
+            src={logo}
+            alt="logo"
+            loading="lazy"
+            className="w-1/2 mx-auto block md:mx-0 md:w-[60%] md:ms-6 md:mt-6"
+          />
         </Link>
 
         {/* elements */}
