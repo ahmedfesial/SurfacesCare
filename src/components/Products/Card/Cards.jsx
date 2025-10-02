@@ -15,10 +15,9 @@ import { GoHeartFill } from "react-icons/go";
 import { BsShare } from "react-icons/bs";
 
 export default function Cards({ filteredProducts }) {
-
-
   const token = localStorage.getItem("userToken");
   const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
   const { selectedBasket, setSelectedBasket, submitMode } =
     useContext(CartContext);
 
@@ -58,11 +57,6 @@ export default function Cards({ filteredProducts }) {
     });
   }
 
-  function getAllBaskets() {
-    return axios.get(`${API_BASE_URL}baskets`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  }
   function getBasketDetails(id) {
     return axios.get(`${API_BASE_URL}baskets/show/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -75,27 +69,7 @@ export default function Cards({ filteredProducts }) {
     select: (res) => res.data.data.data,
   });
 
-  const { data: basketsData } = useQuery({
-    queryKey: ["baskets", !!token],
-    queryFn: getAllBaskets,
-    select: (res) => res.data.data,
-  });
-
-  // لما يدخل من صفحة تانية ويكون باعت basketId أو basketName
-  useEffect(() => {
-    if (location.state?.basketId && basketsData) {
-      const found = basketsData.find((b) => b.id === location.state.basketId);
-      if (found) setSelectedBasket({ id: found.id, name: found.name });
-    } else if (location.state?.basketName && basketsData) {
-      const foundByName = basketsData.find(
-        (b) => b.name === location.state.basketName
-      );
-      if (foundByName)
-        setSelectedBasket({ id: foundByName.id, name: foundByName.name });
-    }
-  }, [location.state, basketsData]);
-
-  // تحميل تفاصيل السلة
+  // ✅ تحميل تفاصيل السلة وحفظها محلي + API
   useEffect(() => {
     if (!basketId) {
       setBasketProductIds([]);
@@ -188,58 +162,68 @@ export default function Cards({ filteredProducts }) {
         localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(updated));
         return next;
       });
-      toast.error("Error Add Product To Basket Successfully");
+      toast.error("Error Add Product To Basket");
     }
   }
 
   // حذف منتج
-  const removeProductFromBasket = useCallback(async (productId) => {
-    if (!basketId) {
-      toast.error("Please Select Basket First!");
-      return;
-    }
+  const removeProductFromBasket = useCallback(
+    async (productId) => {
+      if (!basketId) {
+        toast.error("Please Select Basket First!");
+        return;
+      }
 
-    const currentBasketProducts = addedByBasket[basketId] || [];
-    const item = currentBasketProducts.find((p) => p.productId === productId);
-    
-   
+      const currentBasketProducts = addedByBasket[basketId] || [];
+      const item = currentBasketProducts.find((p) => p.productId === productId);
 
-    // تحديث الحالة المحلية فوراً
-    const updatedProducts = currentBasketProducts.filter((p) => p.productId !== productId);
-    
-    setAddedByBasket((prev) => {
-      const next = { ...prev, [basketId]: updatedProducts };
-      localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(updatedProducts));
-      return next;
-    });
-    
-    setBasketProductIds(updatedProducts.map((m) => m.productId));
-
-    // إذا كان المنتج مؤقت، لا نحتاج لحذفه من API
-    if (item.basketProductId.startsWith("temp_")) {
-      toast.success("Delete Product from Basket");
-      return;
-    }
-
-    // حذف من API
-    try {
-      await axios.delete(
-        `${API_BASE_URL}basket-products/delete/${item.basketProductId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+      // تحديث الحالة المحلية فوراً
+      const updatedProducts = currentBasketProducts.filter(
+        (p) => p.productId !== productId
       );
-      toast.success("Delete Product from Basket");
-    } catch {
-      // في حالة فشل API، نعيد المنتج للحالة المحلية
+
       setAddedByBasket((prev) => {
-        const restored = [...(prev[basketId] || []), item];
-        const next = { ...prev, [basketId]: restored };
-        localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(restored));
+        const next = { ...prev, [basketId]: updatedProducts };
+        localStorage.setItem(
+          `addedProducts:${basketId}`,
+          JSON.stringify(updatedProducts)
+        );
         return next;
       });
-      setBasketProductIds([...updatedProducts.map((m) => m.productId), productId]);
-      toast.error("Error Add Basket");
-    }
-  }, [basketId, addedByBasket, token]);
+
+      setBasketProductIds(updatedProducts.map((m) => m.productId));
+
+      if (!item) return;
+
+      // إذا كان المنتج مؤقت، لا نحتاج لحذفه من API
+      if (item.basketProductId.startsWith("temp_")) {
+        toast.success("Delete Product from Basket");
+        return;
+      }
+
+      try {
+        await axios.delete(
+          `${API_BASE_URL}basket-products/delete/${item.basketProductId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        toast.success("Delete Product from Basket");
+      } catch {
+        // في حالة فشل API، نعيد المنتج
+        setAddedByBasket((prev) => {
+          const restored = [...(prev[basketId] || []), item];
+          const next = { ...prev, [basketId]: restored };
+          localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(restored));
+          return next;
+        });
+        setBasketProductIds([
+          ...updatedProducts.map((m) => m.productId),
+          productId,
+        ]);
+        toast.error("Error Remove Product");
+      }
+    },
+    [basketId, addedByBasket, token]
+  );
 
   // Quantity Controls
   function increaseProductQuantity(productId) {
@@ -263,31 +247,6 @@ export default function Cards({ filteredProducts }) {
     );
   }
 
-  // Select All Products
-  async function toggleSelectAll() {
-    if (!basketId) {
-      toast.error("Please Select Basket First");
-      return;
-    }
-
-    const allSelected = productsToShow.every((product) =>
-      currentAdded.some((p) => p.productId === product.id)
-    );
-
-    if (allSelected) {
-      for (let product of productsToShow) {
-        await removeProductFromBasket(product.id);
-      }
-      toast.success("All products removed from basket");
-    } else {
-      for (let product of productsToShow) {
-        const count = products?.[product.id] ?? 1;
-        await addProductToBasket(product.id, count);
-      }
-      toast.success("All products added to basket");
-    }
-  }
-
   // Products to show
   let productsToShow = Array.isArray(filteredProducts)
     ? filteredProducts
@@ -306,26 +265,6 @@ export default function Cards({ filteredProducts }) {
 
   return (
     <section>
-      <div className="w-[80%] flex justify-end items-center gap-8 ms-8">
-        <p
-          onClick={toggleSelectAll}
-          className="backGroundColor flex items-center gap-2 px-4 py-1 text-white rounded-lg text-sm cursor-pointer"
-        >
-          <IoCartOutline className="text-xl" />
-          {productsToShow.every((p) =>
-            currentAdded.some((c) => c.productId === p.id)
-          )
-            ? "Unselect all"
-            : "Select all"}
-        </p>
-        <p className="text-gray-500">Count : {productsToShow?.length}</p>
-       
-        <div className="flex items-center gap-2 ">
-          <IoMenu className="text-2xl  cursor-pointer text-[#1243AF90]" />
-          <CgMenuGridO className="text-2xl  cursor-pointer text-[#1243AF]" />
-        </div>
-      </div>
-
       <div className="grid grid-cols-4 mt-8 w-[90%] mx-auto gap-6">
         {productsToShow?.length > 0 ? (
           productsToShow.map((product) => {
@@ -376,26 +315,25 @@ export default function Cards({ filteredProducts }) {
 
                     {/* Add To Cart & Update Count */}
                     <div className="flex items-center justify-between gap-2">
-                     <button
-  onClick={(e) => {
-    e.preventDefault();
-    const count = products?.[product.id] ?? 1;
-    if (!isAdded) {
-      addProductToBasket(product.id, count);
-    } else {
-      removeProductFromBasket(product.id); // ✅ هنا بتستدعي API delete
-    }
-  }}
-  className={`${
-    isAdded
-      ? " text-white  border textColor cursor-pointer duration-300 transition-all"
-      : "backGroundColor hover:bg-blue-600 text-white  cursor-pointer duration-300 transition-all"
-  } relative bottom-0 w-full flex items-center py-2 gap-2 justify-center rounded-lg font-medium`}
->
-  <IoCartOutline className="text-lg" />
-  {isAdded ? "Selected" : "Add to cart"}
-</button>
-
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const count = products?.[product.id] ?? 1;
+                          if (!isAdded) {
+                            addProductToBasket(product.id, count);
+                          } else {
+                            removeProductFromBasket(product.id);
+                          }
+                        }}
+                        className={`${
+                          isAdded
+                            ? "text-white border textColor"
+                            : "backGroundColor hover:bg-blue-600 text-white"
+                        } relative bottom-0 w-full flex items-center py-2 gap-2 justify-center rounded-lg font-medium`}
+                      >
+                        <IoCartOutline className="text-lg" />
+                        {isAdded ? "Selected" : "Add to cart"}
+                      </button>
 
                       <div className="py-1 flex items-center justify-center">
                         <button
@@ -405,17 +343,7 @@ export default function Cards({ filteredProducts }) {
                           }}
                           className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center me-2 text-sm font-medium h-8 py-4 w-8 rounded-lg hover:scale-110 transition-all duration-300"
                         >
-                          <svg
-                            className="w-3 h-3 font-bold"
-                            aria-hidden="true"
-                            fill="none"
-                            viewBox="0 0 18 2"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          >
-                            <path d="M1 1h16" />
-                          </svg>
+                          -
                         </button>
 
                         <span className="textColor">
@@ -429,18 +357,7 @@ export default function Cards({ filteredProducts }) {
                           }}
                           className="backGroundColor mb-1 cursor-pointer text-white inline-flex items-center justify-center ms-2 text-sm font-medium h-8 py-4 w-8 rounded-lg hover:scale-110 transition-all duration-300"
                         >
-                          <svg
-                            className="w-3 h-3"
-                            aria-hidden="true"
-                            fill="none"
-                            viewBox="0 0 18 18"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M9 1v16M1 9h16" />
-                          </svg>
+                          +
                         </button>
                       </div>
                     </div>
