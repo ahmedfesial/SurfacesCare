@@ -120,9 +120,11 @@ export default function CreateProducts() {
         Authorization: `Bearer ${token}`,
         },
       })
-      .then(() => {
+      .then((res) => {
         toast.success("Create Produtc success");
         navigate('/ProductManagement')
+        console.log(res);
+        
       })
       .catch((err) => {
         console.log(err.response.data.message);
