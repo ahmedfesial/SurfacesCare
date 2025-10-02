@@ -4,6 +4,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { API_BASE_URL } from "./../../../../config";
 import { useQuery } from "@tanstack/react-query";
 
+
+
 export default function ChartProduct() {
 
 

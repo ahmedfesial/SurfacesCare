@@ -4,7 +4,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { API_BASE_URL } from "../../../../config";
 import axios from "axios";
 
-const COLORS = ["#1243AF", "#11ADD1"];
+
+
 
 export default function ChartTemplates() {
   let token = localStorage.getItem("userToken");
@@ -21,6 +22,8 @@ export default function ChartTemplates() {
     queryFn: getAllAnalyticsTemplate,
     select: (data) => data.data.mostPreferredTemplates,
   });
+
+  const COLORS = ["#1243AF", "#EB7015", "#5205F1", "#11ADD1", "#0BA95B"];
 
   const fallbackData = [{ name: "No Data", value: 1 }];
 
