@@ -33,7 +33,6 @@ export default function AddCustomerModal() {
     onError: (err) => {
       toast.error("Failed to add customer");
       console.log(err);
-      
     },
   });
 
@@ -48,7 +47,6 @@ export default function AddCustomerModal() {
 
   // Add Customer
   function AddCustomer(formValue) {
-
     const formData = new FormData();
 
     formData.append("name", formValue.name);
@@ -69,22 +67,20 @@ export default function AddCustomerModal() {
         if (response.status === 201) {
           toast.success("Customer added successfully");
           formik.resetForm();
-          queryClient.invalidateQueries(['AllCustomers'])
+          queryClient.invalidateQueries(["AllCustomers"]);
         }
       })
       .catch((err) => {
         toast.error("Failed to add customer");
         console.log(err);
-        
-        
       });
   }
 
   let formik = useFormik({
     initialValues: {
-      name : "",
-      email : "",
-      phone : "",
+      name: "",
+      email: "",
+      phone: "",
       company: "",
       default_price_type: "",
       logo: "",
@@ -94,7 +90,7 @@ export default function AddCustomerModal() {
 
   // Get All Prices
   function getAllPrices() {
-    return axios.get(`${API_BASE_URL}product-prices/types`,{
+    return axios.get(`${API_BASE_URL}product-prices/types`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -102,10 +98,8 @@ export default function AddCustomerModal() {
   let { data: Price } = useQuery({
     queryKey: ["AllPrice"],
     queryFn: getAllPrices,
-    select: (res) => res.data.data
+    select: (res) => res.data.data,
   });
-
-  
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -116,7 +110,7 @@ export default function AddCustomerModal() {
 
       {/*Taps  */}
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-[#1234AF]/50 z-50"/>
+        <Dialog.Overlay className="fixed inset-0 bg-[#1234AF]/50 z-50" />
         <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-xl w-[800px] pb-8 z-50 h-[400px]">
           <Tabs.Root defaultValue="basic">
             {/* Tabs */}
@@ -154,10 +148,6 @@ export default function AddCustomerModal() {
                     />
                   </div>
 
-
-
-                  
-
                   {/* Logo & Price side by side */}
                   <div className="flex w-[85%] mx-auto gap-4">
                     {/* Logo */}
@@ -187,18 +177,21 @@ export default function AddCustomerModal() {
                     </div>
                     {/* Price */}
                     <div className="textColor w-1/2 flex flex-col justify-end">
-                        <label className="text-sm mb-1">Price Type</label>
-                        <select
-                          name="default_price_type"
-                          value={formik.values.default_price_type}
-                          onChange={formik.handleChange}
-                          className="w-full p-2 rounded-xl border"
-                        >
-                          {Price?.map((price) => (
-                            <option key={price.id}>{price}</option>
-                          ))}
-                        </select>
-                      </div>
+                      <label className="text-sm mb-1">Price Type</label>
+                      <select
+                        name="default_price_type"
+                        value={formik.values.default_price_type}
+                        onChange={formik.handleChange}
+                        className="w-full p-2 rounded-xl border"
+                      >
+                        <option value="">Select Price</option>
+                        {Price?.map((price) => (
+                          <option key={price.id} value={price}>
+                            {price}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
 
