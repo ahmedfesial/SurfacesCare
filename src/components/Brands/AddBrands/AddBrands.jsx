@@ -25,6 +25,7 @@ export default function AddBrands({ open, onOpenChange }) {
     const formData = new FormData();
     formData.append("logo", values.logo);
     formData.append("background_image_url", values.background_image_url);
+    formData.append("catalog_pdf_url", values.catalog_pdf_url);
     formData.append("name_en", values.name_en);
     formData.append("name_ar", values.name_ar);
     formData.append("short_description_en", values.short_description_en);
@@ -53,7 +54,7 @@ export default function AddBrands({ open, onOpenChange }) {
     initialValues: {
       logo: "",
       background_image_url: "",
-      // catalog_pdf_url: "", //Back this line
+      catalog_pdf_url: "",
       name_en: "",
       name_ar: "",
       short_description_en: "",
@@ -113,8 +114,6 @@ export default function AddBrands({ open, onOpenChange }) {
                 <div className="space-y-4">
                   {/* Logo + Name EN/AR */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
-
-                    {/* Logo */}
                     <div className="w-full md:w-[30%] flex flex-col gap-2">
                       <p className="textColor text-sm">Logo</p>
                       <label
@@ -139,8 +138,6 @@ export default function AddBrands({ open, onOpenChange }) {
                         className="hidden"
                       />
                     </div>
-                     
-                    {/* Name EN */}
                     <div className="flex flex-col w-full md:w-[35%]">
                       <label htmlFor="name_en"> Name EN</label>
                       <input
@@ -154,8 +151,6 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="Name EN"
                       />
                     </div>
-
-                    {/* Name AR */}
                     <div className="flex flex-col w-full md:w-[35%] text-left md:text-right mt-1">
                       <label className="text-sm" htmlFor="name_ar">
                         الاسم عربى
@@ -175,7 +170,6 @@ export default function AddBrands({ open, onOpenChange }) {
 
                   {/* Short Descriptions */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
-                     <div className="flex">
                     <div className="flex flex-col w-full md:w-1/2">
                       <label htmlFor="short_description_en">
                         Short Description EN
@@ -206,11 +200,12 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="مثلا شركة العناية بالاسطح"
                       />
                     </div>
-                     </div>     
                   </div>
 
                   {/* Long Descriptions */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
+
+                    <div className="flex flex-col w-full">
                       <label htmlFor="full_description_en">
                         Long Description EN
                       </label>
@@ -224,8 +219,10 @@ export default function AddBrands({ open, onOpenChange }) {
                         className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
                         placeholder="For Example , Surfaces care company...."
                       />
-
+                    </div>
                     <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
+                      <div className="flex flex-col w-full mt-1">
+
                       <label htmlFor="full_description_ar" className="text-sm">
                         الوصف عربى
                       </label>
@@ -240,10 +237,14 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="الوصف المختصر عربى"
                         />
                       </div>
+                    </div>
+
                   </div>
 
                   {/* Cover + Color */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
+
+                    {/* Cover */}
                     <div className="w-full md:w-1/2 flex flex-col gap-2">
                       <p className="textColor text-sm">Cover</p>
                       <label
@@ -268,6 +269,34 @@ export default function AddBrands({ open, onOpenChange }) {
                         className="hidden"
                       />
                     </div>
+
+                    {/* Catalog PDF */}
+                    <div className="w-full md:w-1/2 flex flex-col gap-2">
+                      <p className="textColor text-sm">Catalog PDF</p>
+                      <label
+                        htmlFor="Catalog-upload"
+                        className="textColor h-12 border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
+                      >
+                        <div className="flex justify-center items-center w-full">
+                          <MdOutlineFileUpload className="text-lg" />
+                        </div>
+                      </label>
+                      <input
+                        id="Catalog-upload"
+                        name="catalog_pdf_url"
+                        type="file"
+                        onBlur={formik.handleBlur}
+                        onChange={(event) =>
+                          formik.setFieldValue(
+                            "catalog_pdf_url",
+                            event.currentTarget.files[0]
+                          )
+                        }
+                        className="hidden"
+                      />
+                    </div>
+
+                    {/*Color*/}
                     <div className="flex flex-col w-full md:w-1/2 mt-6">
                       <div>
       {/* نخفي الـ input */}
@@ -305,7 +334,10 @@ export default function AddBrands({ open, onOpenChange }) {
       </label>
     </div>
                     </div>
+
                   </div>
+
+
                 </div>
                 {/* Add Brand Button */}
                 <div className="flex justify-end mt-6 gap-4">

@@ -114,21 +114,22 @@ export default function CreateProducts() {
     });
     
     axios
-      .post(`${API_BASE_URL}products/create`, formData, {
+      .post(`${API_BASE_URL}/products/create`, formData, {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        toast.success("Create Produtc success");
+        toast.success(res.data.message);
         navigate('/ProductManagement')
         console.log(res);
         
       })
       .catch((err) => {
-        console.log(err.response.data.message);
         toast.error(err.response.data.message);
+        console.log(err);
+        
       });
   }
 

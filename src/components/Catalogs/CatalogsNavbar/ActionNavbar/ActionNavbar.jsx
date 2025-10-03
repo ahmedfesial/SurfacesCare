@@ -105,7 +105,6 @@ export default function ActionNavbar() {
       <Accordion.Root
         className="w-[96.5%] mx-auto mt-4 rounded-md bg-white textColor"
         type="single"
-        defaultValue="item-1"
         collapsible
       >
         <AccordionItem value="item-1">

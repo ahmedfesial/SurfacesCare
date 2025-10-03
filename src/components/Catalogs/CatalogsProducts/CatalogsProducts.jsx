@@ -68,29 +68,29 @@ export default function CatalogsProducts() {
   return (
     <section>
       <section>
-        <div className="grid grid-cols-[320px_1fr] me-4">
+        <div className="grid lg:grid-cols-[320px_1fr] me-4">
           {/*Slilde bar */}
-          <div className="mb-14 me-8">
+          <div className="hidden lg:block mb-14 me-8">
             <Dashboard />
           </div>
 
           {/*Navbar */}
-          <div>
+          <div className="w-full">
             <CatalogsProductsNavbar />
 
             {/* Content */}
-            <div className="my-52">
-              <div className="w-[90%] flex justify-end items-center gap-8 ms-8 pt-4">
+            <div className="my-12 lg:my-50">
+              <div className="w-full sm:w-[90%] flex justify-end items-center gap-8 sm:ms-8 pt-4 px-4 sm:px-0">
                 <p className="text-[#11ADD1] font-semibold">
                   Count : {data?.length}
                 </p>
               </div>
 
-              <div className="grid grid-cols-4 mt-8 w-[90%] mx-auto gap-6 me-22">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-8 w-[95%] mx-auto gap-6">
                 {data?.map((product) => {
                   return (
-                    <NavLink to={`/ProductDetails/${product.product_id}`}>
-                    <div key={product.id}>
+                    <NavLink to={`/ProductDetails/${product.product_id}`} key={product.id}>
+                    <div>
                       <div className="shadow-lg bg-white rounded-xl hover:shadow-2xl duration-300 transition-all h-[400px] relative">
                         {/* Icons Top Right */}
                         <div className="absolute top-2 right-2 flex gap-3 z-10">
