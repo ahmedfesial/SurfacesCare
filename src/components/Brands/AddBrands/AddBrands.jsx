@@ -45,10 +45,12 @@ export default function AddBrands({ open, onOpenChange }) {
       .then(() => {
         toast.success("Create Brands");
         queryBrand.invalidateQueries(["AllBrands"]);
+      formik.resetForm();
       })
       .catch((err) => {
         toast.error("Error Create Brands");
         console.log(err);
+        
       });
   }
 
@@ -118,8 +120,9 @@ export default function AddBrands({ open, onOpenChange }) {
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
                     <div className="w-full md:w-[30%] flex flex-col gap-2">
                       <p className="textColor text-sm">{t("Customers.Logo")}</p>
+
                       <label
-                        htmlFor="file-upload"
+                        htmlFor="file-Logo"
                         className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
                       >
                         <div className="flex justify-center items-center w-full">
@@ -127,7 +130,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         </div>
                       </label>
                       <input
-                        id="file-upload"
+                        id="file-Logo"
                         name="logo"
                         type="file"
                         onBlur={formik.handleBlur}
