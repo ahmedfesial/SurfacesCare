@@ -4,7 +4,9 @@ import { CartContext } from "../../../../../Context/CartContext";
 import { t } from "i18next";
 
 
-export default function UpdateBasket() {
+export default function   UpdateBasket() {
+
+
   const navigate = useNavigate();
   const { selectedBasket } = useContext(CartContext);
 
@@ -21,6 +23,7 @@ export default function UpdateBasket() {
       navigate("/Products");
     }
   };
+
 
   return (
     <button

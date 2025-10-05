@@ -168,11 +168,11 @@ export default function DataTableTemplate() {
                   <td className="ps-8 p-4">{template.id}</td>
 
                   {/* Name */}
-                  <td className="truncate">{template.name}</td>
+                  <td className="truncate">{(template.name || "").split(" ").slice(0, 2).join(" ")}</td>
 
                   {/* Description */}
                   <td className="truncate">
-                    {template.description.split(" ").slice(0, 4).join(" ")}
+                    {(template.description || "").split(" ").slice(0, 2).join(" ")}
                   </td>
 
                   {/* Actions */}

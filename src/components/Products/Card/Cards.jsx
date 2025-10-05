@@ -17,18 +17,54 @@ import { t } from "i18next";
 export default function Cards({ filteredProducts }) {
   const token = localStorage.getItem("userToken");
   const location = useLocation();
-  const { selectedBasket, setSelectedBasket, submitMode } = useContext(CartContext);
+  const { selectedBasket } = useContext(CartContext);
 
   const [localQuantities, setLocalQuantities] = useState({});
-  const [addedByBasket, setAddedByBasket] = useState({});
-  const [basketProductIds, setBasketProductIds] = useState([]);
-  const onlyBasketProducts = Boolean(location.state?.fromUpdate);
-  const basketId = selectedBasket?.id;
-  const currentAdded = basketId ? addedByBasket[basketId] || [] : [];
-
-  // wishlist حالة
+  const [basketProducts, setBasketProducts] = useState([]); // المنتجات داخل السلة
   const [wishlist, setWishlist] = useState({});
+  const basketId = selectedBasket?.id;
+  const fromUpdate = location.state?.fromUpdate || false;
 
+  // 📦 تحميل كل المنتجات
+  const { data: allProducts, isLoading } = useQuery({
+    queryKey: ["AllProducts"],
+    queryFn: async () => {
+      const res = await axios.get(`${API_BASE_URL}products`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data.data.data;
+    },
+  });
+
+  // 🛒 تحميل المنتجات داخل السلة عند التحديث
+  useEffect(() => {
+    if (!basketId || !fromUpdate) return;
+
+    axios
+      .get(`${API_BASE_URL}baskets/show/${basketId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const basketProds = res.data?.data?.data?.basket_products || [];
+        const mapped = basketProds.map((bp) => ({
+          productId: bp.product?.id ?? bp.product_id,
+          quantity: bp.quantity,
+          basketProductId: bp.id,
+        }));
+
+        setBasketProducts(mapped);
+
+        // ضبط الكميات المحلية حسب اللي في السلة
+        const initialQuantities = {};
+        mapped.forEach((p) => {
+          initialQuantities[p.productId] = p.quantity;
+        });
+        setLocalQuantities(initialQuantities);
+      })
+      .catch((err) => console.error("Error loading basket details", err));
+  }, [basketId, fromUpdate]);
+
+  // ❤️ المفضلة
   const toggleWishlist = (id) => {
     setWishlist((prev) => ({
       ...prev,
@@ -36,93 +72,13 @@ export default function Cards({ filteredProducts }) {
     }));
   };
 
-  const handleShare = (e, product) => {
-    e.preventDefault();
-    if (navigator.share) {
-      navigator.share({
-        title: product.product_name,
-        text: product.specification,
-        url: window.location.origin + `/ProductDetails/${product.id}`,
-      });
-    } else {
-      alert("Sharing not supported in this browser.");
-    }
-  };
-
-  function getAllProducts() {
-    return axios.get(`${API_BASE_URL}products`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  }
-
-  function getBasketDetails(id) {
-    return axios.get(`${API_BASE_URL}baskets/show/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  }
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["AllProducts"],
-    queryFn: getAllProducts,
-    select: (res) => res.data.data.data,
-  });
-
-  // ✅ تحميل تفاصيل السلة
-  useEffect(() => {
-    if (!basketId) {
-      setBasketProductIds([]);
-      return;
-    }
-
-    const stored = JSON.parse(localStorage.getItem(`addedProducts:${basketId}`)) || [];
-    setAddedByBasket((prev) => ({ ...prev, [basketId]: stored }));
-    setBasketProductIds(stored.map((m) => m.productId));
-
-    getBasketDetails(basketId)
-      .then((res) => {
-        const basketProducts = res.data?.data?.data?.basket_products || [];
-        const mapped = basketProducts.map((bp) => ({
-          productId: bp.product?.id ?? bp.product_id,
-          basketProductId: bp.id,
-        }));
-
-        const merged = [
-          ...mapped,
-          ...stored.filter((s) => !mapped.some((m) => m.productId === s.productId)),
-        ];
-
-        setAddedByBasket((prev) => ({ ...prev, [basketId]: merged }));
-        setBasketProductIds(merged.map((m) => m.productId));
-        localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(merged));
-      })
-      .catch(() => {
-        setAddedByBasket((prev) => ({ ...prev, [basketId]: stored }));
-        setBasketProductIds(stored.map((m) => m.productId));
-      });
-  }, [basketId]);
-
-  // ✅ إضافة منتج
+  // 📩 إضافة منتج جديد للسلة
   async function addProductToBasket(productId, quantity) {
-    if (!basketId) {
-      toast.error("Please Select Basket First!");
-      return;
-    }
-
-    if (quantity <= 0) {
-      toast.error("Please select quantity before adding!");
-      return;
-    }
-
-    setAddedByBasket((prev) => {
-      const prevList = prev[basketId] || [];
-      const updated = [...prevList, { productId, basketProductId: `temp_${Date.now()}` }];
-      const next = { ...prev, [basketId]: updated };
-      localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(updated));
-      return next;
-    });
+    if (!basketId) return toast.error("Please select basket first!");
+    if (quantity <= 0) return toast.error("Please select quantity before adding!");
 
     try {
-      const res = await axios.post(
+      await axios.post(
         `${API_BASE_URL}basket-products/create`,
         {
           basket_id: basketId,
@@ -131,81 +87,82 @@ export default function Cards({ filteredProducts }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const basketProduct = res.data.data[0];
-      setAddedByBasket((prev) => {
-        const prevList = prev[basketId] || [];
-        const updated = prevList.map((item) =>
-          item.productId === productId && item.basketProductId.startsWith("temp_")
-            ? { productId, basketProductId: basketProduct.id }
-            : item
-        );
-        const next = { ...prev, [basketId]: updated };
-        localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(updated));
-        return next;
-      });
+      setBasketProducts((prev) => [
+        ...prev,
+        { productId, quantity, basketProductId: `temp_${Date.now()}` },
+      ]);
+
       toast.success("Product added successfully!");
     } catch (err) {
       console.error(err);
-      setAddedByBasket((prev) => {
-        const updated = (prev[basketId] || []).filter((item) => item.productId !== productId);
-        const next = { ...prev, [basketId]: updated };
-        localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(updated));
-        return next;
-      });
       toast.error("Error adding product!");
     }
   }
 
-  // ✅ حذف منتج
-  const removeProductFromBasket = useCallback(
-    async (productId) => {
-      if (!basketId) {
-        toast.error("Please Select Basket First!");
-        return;
-      }
+  // 🔁 تحديث كمية منتج موجود في السلة
+  async function updateBasketProduct(productId, newQuantity) {
+    const existing = basketProducts.find((p) => p.productId === productId);
+    if (!existing) return addProductToBasket(productId, newQuantity);
 
-      const currentBasketProducts = addedByBasket[basketId] || [];
-      const item = currentBasketProducts.find((p) => p.productId === productId);
+    try {
+      await axios.patch(
+        `${API_BASE_URL}basket-products/update/${existing.basketProductId}`,
+        { quantity: newQuantity },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      if (!item) {
-        toast.error("Product not found in basket!");
-        return;
-      }
+      setBasketProducts((prev) =>
+        prev.map((p) =>
+          p.productId === productId ? { ...p, quantity: newQuantity } : p
+        )
+      );
 
-      try {
-        await axios.delete(`${API_BASE_URL}basket-products/delete/${item.basketProductId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      toast.success("Quantity updated!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update quantity!");
+    }
+  }
 
-        const updatedProducts = currentBasketProducts.filter((p) => p.productId !== productId);
-        setAddedByBasket((prev) => {
-          const next = { ...prev, [basketId]: updatedProducts };
-          localStorage.setItem(`addedProducts:${basketId}`, JSON.stringify(updatedProducts));
-          return next;
-        });
-        setBasketProductIds((prev) => prev.filter((id) => id !== productId));
-        toast.success("Product removed!");
-      } catch (error) {
-        toast.error("Failed to remove product!");
-        console.error(error);
-      }
-    },
-    [basketId, addedByBasket, token]
-  );
+  // ❌ حذف منتج من السلة
+  async function removeProductFromBasket(productId) {
+    const existing = basketProducts.find((p) => p.productId === productId);
+    if (!existing) return toast.error("Product not found!");
 
-  // ✅ تحكم الكمية
+    try {
+      await axios.delete(
+        `${API_BASE_URL}basket-products/delete/${existing.basketProductId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setBasketProducts((prev) => prev.filter((p) => p.productId !== productId));
+      toast.success("Product removed!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to remove product!");
+    }
+  }
+
+  // ➕➖ التحكم في الكمية محليًا
   function handleIncrease(productId) {
-    setLocalQuantities((prev) => ({
-      ...prev,
-      [productId]: (prev[productId] ?? 0) + 1,
-    }));
+    const newQty = (localQuantities[productId] ?? 0) + 1;
+    setLocalQuantities((prev) => ({ ...prev, [productId]: newQty }));
+
+    if (basketProducts.some((p) => p.productId === productId)) {
+      updateBasketProduct(productId, newQty);
+    }
   }
 
   function handleDecrease(productId) {
-    setLocalQuantities((prev) => {
-      const current = prev[productId] ?? 0;
-      return { ...prev, [productId]: current > 0 ? current - 1 : 0 };
-    });
+    const current = localQuantities[productId] ?? 0;
+    const newQty = current > 0 ? current - 1 : 0;
+    setLocalQuantities((prev) => ({ ...prev, [productId]: newQty }));
+
+    if (newQty === 0 && basketProducts.some((p) => p.productId === productId)) {
+      removeProductFromBasket(productId);
+    } else if (basketProducts.some((p) => p.productId === productId)) {
+      updateBasketProduct(productId, newQty);
+    }
   }
 
   if (isLoading) {
@@ -216,33 +173,21 @@ export default function Cards({ filteredProducts }) {
     );
   }
 
-  // ✅ المنتجات المعروضة
-  let productsToShow = Array.isArray(filteredProducts) ? filteredProducts : data || [];
-  if (onlyBasketProducts && basketProductIds.length > 0) {
-    productsToShow = productsToShow.filter((p) => basketProductIds.includes(p.id));
-  }
-
-  if (submitMode && basketId) {
-    productsToShow = productsToShow.filter((p) =>
-      currentAdded.some((added) => added.productId === p.id)
-    );
-  }
+  // 🔍 المنتجات النهائية المعروضة
+  const all = Array.isArray(filteredProducts) ? filteredProducts : allProducts || [];
 
   return (
     <section>
       <div className="grid grid-cols-4 mt-8 w-[90%] mx-auto gap-6">
-        {productsToShow?.length > 0 ? (
-          productsToShow.map((product) => {
-            const isAdded = currentAdded.some((p) => p.productId === product.id);
+        {all?.length > 0 ? (
+          all.map((product) => {
+            const isAdded = basketProducts.some((p) => p.productId === product.id);
             const quantity = localQuantities[product.id] ?? 0;
 
             return (
               <NavLink key={product.id} to={`/ProductDetails/${product.id}`}>
                 <div className="shadow-lg bg-white rounded-xl hover:shadow-2xl duration-300 transition-all h-full flex flex-col relative">
                   <div className="absolute top-2 right-2 flex gap-3">
-                    <button onClick={(e) => handleShare(e, product)}>
-                      <BsShare className="text-lg text-gray-600 cursor-pointer hover:text-[#11ADD1]" />
-                    </button>
                     <button
                       onClick={(e) => {
                         e.preventDefault();
@@ -255,16 +200,27 @@ export default function Cards({ filteredProducts }) {
                         }`}
                       />
                     </button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigator.share?.({
+                          title: product.name_en,
+                          text: product.specification,
+                          url: window.location.origin + `/ProductDetails/${product.id}`,
+                        });
+                      }}
+                    >
+                      <BsShare className="text-lg text-gray-600 cursor-pointer hover:text-[#11ADD1]" />
+                    </button>
                   </div>
 
-                  <span>
-                    <img
-                      src={product.image_url || defultProductImage}
-                      alt="Product Image"
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </span>
+                  <img
+                    src={product.image_url || defultProductImage}
+                    alt="Product"
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+
                   <div className="px-5 pb-5">
                     <p className="text-[#11ADD1] my-2 text-sm text-left font-semibold flex-grow">
                       {product.specification}
@@ -273,7 +229,7 @@ export default function Cards({ filteredProducts }) {
                       {(product?.name_en || "").split(" ").slice(0, 4).join(" ")}
                     </h5>
 
-                    {/* Add To Cart & Quantity */}
+                    {/* زر السلة + التحكم بالكمية */}
                     <div className="flex items-center justify-between gap-2">
                       <button
                         disabled={quantity === 0}
