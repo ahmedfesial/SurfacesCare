@@ -11,6 +11,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CiFolderOn } from "react-icons/ci";
 const CompanyFolder = React.lazy(() => import("./CompanyFolder"));
 import { BiEditAlt } from "react-icons/bi";
+import { t } from "i18next";
 
 export default function UpdateClientDialog({
   updateClient,
@@ -181,6 +182,9 @@ export default function UpdateClientDialog({
     onSubmit: deleteFolder,
   });
 
+
+
+
   return (
     <Dialog.Root open={updateClient} onOpenChange={setUpdateClient}>
       <Dialog.Portal>
@@ -306,13 +310,13 @@ export default function UpdateClientDialog({
                 value="basic"
                 className="py-2 px-4 ms-4 data-[state=active]:border-b-2 data-[state=active]:font-bold"
               >
-                Basic Info
+                {t("Customers.Basic Info")}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="folder"
                 className="py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:font-bold"
               >
-                Company Folder
+                {t("Customers.Company Folder")}
               </Tabs.Trigger>
             </Tabs.List>
 
@@ -323,7 +327,7 @@ export default function UpdateClientDialog({
                   <div className="space-y-2">
                     <div className="flex flex-col gap-2">
                       <label className="textColor ms-14 text-sm">
-                        Customer name
+                        {t("Customers.Customer Name")}
                       </label>
                       <input
                         type="text"
@@ -337,7 +341,7 @@ export default function UpdateClientDialog({
 
                     <div className="flex w-[85%] mx-auto gap-4">
                       <div className="w-1/2 flex flex-col gap-2">
-                        <p className="textColor text-sm">Logo</p>
+                        <p className="textColor text-sm">{t("Customers.Logo")}</p>
                         <label
                           htmlFor="file-upload"
                           className="textColor border p-2 rounded-xl flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF] hover:text-white transition w-full"
@@ -359,7 +363,7 @@ export default function UpdateClientDialog({
                       </div>
 
                       <div className="textColor w-1/2 flex flex-col justify-end">
-                        <label className="text-sm mb-1">Price Type</label>
+                        <label className="text-sm mb-1">{t("Customers.Price Type")}</label>
                         <select
                           name="default_price_type"
                           value={formik.values.default_price_type}
@@ -381,14 +385,14 @@ export default function UpdateClientDialog({
                       type="submit"
                       className="px-8 text-[#1243AF] rounded-xl p-2 border cursor-pointer hover:text-white hover:bg-[#1243AF] duration-300"
                     >
-                      Update
+                      {t("Update")}
                     </button>
                     <button
                       type="button"
                       onClick={deleteCustomer}
                       className="px-8 text-[#DC2626] rounded-xl p-2 border cursor-pointer hover:text-white hover:bg-[#DC2626] duration-300"
                     >
-                      Delete
+                     {t("Delete")}
                     </button>
                   </div>
                 </form>

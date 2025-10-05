@@ -3,12 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { API_BASE_URL } from "../../../../config";
+import { useTranslation } from "react-i18next";
+
 
 
 
 const COLORS = ["#EB7015", "#1243AF", "#11ADD1"];
 
 export default function ChartCompanies() {
+      const { t } = useTranslation(); 
+  
 
 
   let token = localStorage.getItem("userToken");
@@ -51,7 +55,7 @@ export default function ChartCompanies() {
                 font-extralight
               "
             >
-              <p className="textColor my-4 text-xl font-light">Most Used Companies</p>
+              <p className="textColor my-4 text-xl font-light">{t('Most Used Companies')}</p>
       
               {/* Chart */}
               <div className="flex justify-center items-center mb-9">

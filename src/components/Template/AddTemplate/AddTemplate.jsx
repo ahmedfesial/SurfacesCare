@@ -6,11 +6,14 @@ import { useFormik } from "formik";
 import { FaPlus } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 export default function AddTemplate() {
-  let token = localStorage.getItem("userToken");
 
+
+  let token = localStorage.getItem("userToken");
   let queryClient = useQueryClient();
+  let {t} = useTranslation();
 
   // Create Template
   async function createTemplate(values) {
@@ -85,7 +88,7 @@ export default function AddTemplate() {
     <Dialog.Root>
       {/*Button Add*/}
       <Dialog.Trigger className="bg-white flex items-center gap-2 text-[#1243AF] px-8 py-1 rounded-md mt-2 cursor-pointer hover:bg-gray-300 duration-300 transition-all z-40">
-        Add Template <FaPlus className="text-sm" />
+        {t("Template.Add Template")} <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -101,7 +104,7 @@ export default function AddTemplate() {
                   value="basic"
                   className="py-2 px-4 ms-4 text-sm font-medium border-b-2 "
                 >
-                  Add Template
+                  {t("Template.Add Template")}
                 </Tabs.Trigger>
               </Tabs.List>
 
@@ -114,7 +117,7 @@ export default function AddTemplate() {
                         htmlFor="name"
                         className="block mb-2 text-sm font-light"
                       >
-                        Name
+                        {t("Name")}
                       </label>
                       <input
                         onChange={formik.handleChange}
@@ -132,7 +135,7 @@ export default function AddTemplate() {
                         htmlFor="description"
                         className="block mb-2 text-sm font-light"
                       >
-                        Description
+                        {t("Brand.Description")}
                       </label>
                       <input
                         onChange={formik.handleChange}
@@ -147,10 +150,11 @@ export default function AddTemplate() {
                   </div>
 
                   {/* Upload Images */}
+
                   {/*Start Image Cover*/}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Upload Start Images
+                      {t("Template.Upload Start Images")}
                     </label>
                     <input
                       type="file"
@@ -179,7 +183,7 @@ export default function AddTemplate() {
                   {/* End Images Cover */}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Upload End Images
+                      {t("Template.Upload End Images")}
                     </label>
                     <input
                       type="file"
@@ -205,7 +209,7 @@ export default function AddTemplate() {
                   {/* Product Image Cover */}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Upload Product Images
+                      {t("Template.Upload Product Image")}
                     </label>
                     <input
                       type="file"
@@ -236,7 +240,7 @@ export default function AddTemplate() {
                   {/* Client Image Cover */}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Upload Client Images
+                      {t("Template.Upload Client Image")}
                     </label>
                     <input
                       type="file"
@@ -272,7 +276,7 @@ export default function AddTemplate() {
                 type="submit"
                 className="px-6 bg-white text-[#1243AF] rounded-md p-2 cursor-pointer hover:bg-[#1243AF] hover:text-white border duration-300 transition-all"
               >
-                Create Template
+                {t("Save")}
               </button>
             </div>
           </form>

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../../../config";
 import { useFormik } from "formik";
 import * as Dialog from "@radix-ui/react-dialog";
-
+import { t } from "i18next";
 export default function EditSubCategoryModal({ open, onOpenChange, subCategory }) {
   const token = localStorage.getItem("userToken");
   const queryClient = useQueryClient();
@@ -75,12 +75,6 @@ export default function EditSubCategoryModal({ open, onOpenChange, subCategory }
           onEscapeKeyDown={() => onOpenChange?.(false)}
         >
           <div className="p-4 md:p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-[#1243AF]">Edit Sub Category</h2>
-              <Dialog.Close className="text-gray-500 hover:text-gray-700 text-2xl">
-                ×
-              </Dialog.Close>
-            </div>
             
             <form onSubmit={formik.handleSubmit} className="h-[500px] flex flex-col justify-between">
         <div className="space-y-4">
@@ -91,7 +85,7 @@ export default function EditSubCategoryModal({ open, onOpenChange, subCategory }
             value={formik.values.main_category_id || ""}
             className="w-full rounded-md p-1 border textColor"
           >
-            <option value="">Select Main-Category</option>
+            <option value="">{t("Brand.Select Main-Category")}</option>
             {mainCategoriesData?.map((mainCategory) => (
               <option key={mainCategory.id} value={mainCategory.id}>
                 {mainCategory.name_en}
@@ -133,18 +127,12 @@ export default function EditSubCategoryModal({ open, onOpenChange, subCategory }
         
         {/* Update SubCategory Button */}
         <div className="flex justify-end mt-6 gap-4">
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            className="px-8 bg-gray-500 text-white rounded-md p-2 cursor-pointer hover:bg-gray-600 duration-300 transition-all"
-          >
-            Cancel
-          </button>
+          
           <button
             className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
             type="submit"
           >
-            Update Sub Category
+            {t("Save")}
           </button>
         </div>
             </form>

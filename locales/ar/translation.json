@@ -1,0 +1,48 @@
+{
+  "actions": {
+    "approve": "",
+    "reject": ""
+  },
+  "notifications": {
+    "no_notifications": ""
+  },
+  "categories": {
+    "title": ""
+  },
+  "Dashboard": "",
+  "Quotation": "",
+  "Customers": "",
+  "Categories": "",
+  "Products": "",
+  "Baskets": "",
+  "Catalogs": "",
+  "ToDoList": "",
+  "Settings": "",
+  "Members": "",
+  "Brands": "",
+  "Product": "",
+  "Template": "",
+  "analytics": "",
+  "messages": {
+    "approved_price": "",
+    "error_approved_price": "",
+    "rejected_price": "",
+    "error_reject_price": "",
+    "error_rejected_price": ""
+  },
+  "dashboard": {
+    "title": ""
+  },
+  "brand": {
+    "name": ""
+  },
+  "welcome": {
+    "back": "",
+    "subtitle": ""
+  },
+  "products": {
+    "title": ""
+  },
+  "with_price": "",
+  "quotation": ""
+}

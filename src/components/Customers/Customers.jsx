@@ -12,20 +12,20 @@ const DataTableCustomers = React.lazy(() =>
 export default function Customers() {
   return (
     <section>
-      <div className="grid grid-cols-[270px_1fr] me-4">
+      <div className={`grid grid-cols-[270px_1fr]`}>
         {/*Slilde bar */}
-        <div className="mb-14 me-8">
+        <div className={`mb-14 `}>
           <Dashboard />
         </div>
 
-        {/*Main Div*/}
+        {/* Main Div */}
         <div>
           {/*Navbar */}
-          <CustomersNavbar />
+          <CustomersNavbar/>
 
-          {/* Content */}
-          <div className="mt-52">
-            <DataTableCustomers />
+          {/* Content DataTables*/}
+          <div className="relative top-40">
+            <DataTableCustomers/>
           </div>
         </div>
       </div>

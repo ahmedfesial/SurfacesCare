@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -95,6 +95,12 @@ function App() {
       {path : '*' , element : <NotFoundPage/>}
     ]}
   ])
+  useEffect(() => {
+  const cur = localStorage.getItem('lang') || 'ar';
+  document.documentElement.dir = cur === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = cur;
+}, []);
+
 
 
   return ( 

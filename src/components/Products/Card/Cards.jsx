@@ -13,6 +13,7 @@ import { IoMenu } from "react-icons/io5";
 import { CgMenuGridO } from "react-icons/cg";
 import { GoHeartFill } from "react-icons/go";
 import { BsShare } from "react-icons/bs";
+import { t } from "i18next";
 
 export default function Cards({ filteredProducts }) {
   const token = localStorage.getItem("userToken");
@@ -260,6 +261,7 @@ export default function Cards({ filteredProducts }) {
     );
   }
 
+
   // Products to show
   let productsToShow = Array.isArray(filteredProducts)
     ? filteredProducts
@@ -343,10 +345,10 @@ export default function Cards({ filteredProducts }) {
                           isAdded
                             ? "text-white border textColor"
                             : "backGroundColor hover:bg-blue-600 text-white"
-                        } relative bottom-0 w-full flex items-center py-2 gap-2 justify-center rounded-lg font-medium`}
+                        } relative bottom-0 w-full flex items-center py-2 justify-center rounded-lg font-medium px-1`}
                       >
                         <IoCartOutline className="text-lg" />
-                        {isAdded ? "Selected" : "Add to cart"}
+                        {isAdded ? t("Basket.Selected") : t("Add To Basket")}
                       </button>
 
                       <div className="py-1 flex items-center justify-center">

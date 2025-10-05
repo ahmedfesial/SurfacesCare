@@ -11,13 +11,14 @@ import { GoHeartFill } from "react-icons/go";
 import { BsShare } from "react-icons/bs";
 import toast from "react-hot-toast";
 import EditProductModal from "../EditModelProduct/EditModelProduct";
+import { useTranslation } from "react-i18next";
 
 export default function CardsManagement({ filteredProducts }) {
 
+
+  let {t} = useTranslation();
   let token = localStorage.getItem("userToken");
-
   let queryClient = useQueryClient();
-
   // Get All Products
   function getAllProducts() {
     return axios.get(`${API_BASE_URL}products`, {
@@ -102,7 +103,7 @@ export default function CardsManagement({ filteredProducts }) {
         {productsToShow?.map((product) => (
           <div key={product.id}>
             <div className="shadow-lg bg-white rounded-xl hover:shadow-2xl duration-300 transition-all h-full flex flex-col relative">
-              <div className="absolute top-2 right-2 flex gap-3 z-10">
+              <div className="absolute top-2 right-2 flex gap-3 ">
                 <button onClick={(e) => handleShare(e, product)}>
                   <BsShare className="text-lg text-gray-600 cursor-pointer hover:text-[#11ADD1]" />
                 </button>
@@ -145,7 +146,7 @@ export default function CardsManagement({ filteredProducts }) {
                       to={`/UpdateProduct/${product.id}`}
                       className="backGroundColor text-sm p-2 w-full flex items-center gap-2 justify-center rounded-md text-white hover:bg-[#1243AF] border hover:text-white cursor-pointer"
                     >
-                      Edit <FaPencilAlt className="text-sm" />
+                      {t("Edit")} <FaPencilAlt className="text-sm" />
                     </NavLink>
                     <p
                       onClick={(e) => {
@@ -154,7 +155,7 @@ export default function CardsManagement({ filteredProducts }) {
                       }}
                       className="bg-[#FF0000] text-sm p-2 w-full flex items-center gap-2 justify-center rounded-md text-white hover:bg-white border hover:text-[#FF0000] cursor-pointer"
                     >
-                      Delete <LuDelete />
+                      {t("Delete")} <LuDelete />
                     </p>
                   </div>
                 </div>

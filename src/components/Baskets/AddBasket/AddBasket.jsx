@@ -6,10 +6,12 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaPlus } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 export default function AddBasket() {
-  let token = localStorage.getItem("userToken");
 
+  let {t} = useTranslation();
+  let token = localStorage.getItem("userToken");
   let queryClient = useQueryClient(); //Update UI
 
   function getAllClient() {
@@ -57,7 +59,7 @@ export default function AddBasket() {
     <Dialog.Root>
       {/*Button Add  */}
       <Dialog.Trigger className="bg-white flex items-center gap-2 text-[#1243AF] px-4 sm:px-8 py-1 rounded-md mt-2 cursor-pointer hover:bg-gray-300 duration-300 transition-all me-6 z-40">
-        Add Basket <FaPlus className="text-sm" />
+        {t("Basket.Add Basket")} <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       {/*Taps  */}
@@ -71,7 +73,7 @@ export default function AddBasket() {
                   value="basic"
                   className="py-2 px-4 ms-4 text-sm font-medium border-b-2 "
                 >
-                  Add Basket
+                  {t("Basket.Add Basket")}
                 </Tabs.Trigger>
               </Tabs.List>
 
@@ -79,7 +81,7 @@ export default function AddBasket() {
                 <div className="space-y-4">
                   <div className="flex flex-col gap-2">
                     <label className="text-[#1243AF] text-md font-light">
-                      Basket name
+                      {t("Basket.Basket Name")}
                     </label>
                     <input
                       type="text"
@@ -88,14 +90,13 @@ export default function AddBasket() {
                       name="name"
                       value={formik.values.name}
                       className="w-full border-1 border-[#1243AF] p-2 rounded-md focus:outline-none"
-                      placeholder="EX: Surfaces Care Company"
                     />
                   </div>
 
                   {/* Client Id */}
                   <div className="flex flex-col gap-2">
                     <label className="text-[#1243AF] text-md font-light">
-                      Assign to Customer
+                      {t("Basket.Assign to Customer")}
                     </label>
                     <select
                       name="client_id"
@@ -104,7 +105,7 @@ export default function AddBasket() {
                       value={formik.values.client_id}
                       className="w-full p-2.5 border-1 textColor border-[#1243AF] rounded-md focus:outline-none"
                     >
-                      <option className="p-2">Choose Customer</option>
+                      <option className="p-2">{t("Basket.Choose Customer")}</option>
                       {data?.data?.map((client) => (
                         <option key={client.id} value={client.id}>
                           {client.company}
@@ -120,7 +121,7 @@ export default function AddBasket() {
                 type="submit"
                 className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
               >
-                Add Basket
+                {t("Basket.Add Basket")}
               </button>
             </div>
           </form>

@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import axios from "axios";
-import { MdOutlineFileUpload } from "react-icons/md";
+import { Trans } from "react-i18next";
 import { CiImport } from "react-icons/ci";
 import { API_BASE_URL } from "./../../../../config";
 import { CiExport } from "react-icons/ci";
@@ -10,8 +10,11 @@ import toast from "react-hot-toast";
 import { FaPlus } from "react-icons/fa6";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { t } from "i18next";
 
 export default function ExportImport() {
+
+
   let token = localStorage.getItem("userToken");
 
   // دالة تصدير المنتجات Excel
@@ -82,7 +85,9 @@ export default function ExportImport() {
         lang="en"
         className="bg-white flex items-center gap-2 text-[#1243AF] px-4 sm:px-8 py-1 rounded-md mt-2 cursor-pointer hover:bg-gray-300 duration-300 transition-all me-6 z-50"
       >
-        <span className="font-bold">Product</span> Import / Export
+        <Trans i18nKey="product_import_export">
+                  <span className="font-bold">Prodcut</span> Import / Export
+                </Trans> 
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -95,7 +100,7 @@ export default function ExportImport() {
                   value="basic"
                   className="py-2 px-4 ms-4 text-sm font-medium border-b-2 "
                 >
-                  Product Import and Export
+                  {t("Product Import and Export")}
                 </Tabs.Trigger>
               </Tabs.List>
 
@@ -107,7 +112,7 @@ export default function ExportImport() {
                       onClick={handleExport}
                       className="rounded-md textColor border border-blue-400 transition-all duration-200 py-1 px-4 flex items-center cursor-pointer font-light w-full justify-center gap-2"
                     >
-                      Export Files <CiExport />
+                      {t("Export Files")} <CiExport />
                     </button>
                     {/* Import */}
                     <label
@@ -116,7 +121,7 @@ export default function ExportImport() {
                     >
                       <div className="w-full">
                         <span className="flex items-center justify-center gap-2">
-                          Upload Files
+                          {t("Customers.Upload Files")}
                           <CiImport />
                         </span>
                       </div>

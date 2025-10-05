@@ -10,8 +10,12 @@ import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 export default function AddCustomerModal() {
+
+  let {t} = useTranslation()
+
   let token = localStorage.getItem("userToken");
   let queryClient = useQueryClient();
 
@@ -105,7 +109,7 @@ export default function AddCustomerModal() {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       {/*Button Add  */}
       <Dialog.Trigger className="textColor bg-white flex items-center gap-2 px-8 py-1 mt-2 me-6 rounded-md cursor-pointer hover:bg-gray-300 duration-300 transition-all">
-        Add Customer <FaPlus className="text-sm" />
+        {t("Add Customer")} <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       {/*Taps  */}
@@ -119,13 +123,13 @@ export default function AddCustomerModal() {
                 value="basic"
                 className="py-2 px-4 ms-4  data-[state=active]:border-b-2 data-[state=active]:font-bold"
               >
-                Basic Info
+                {t("Customers.Basic Info")}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="folder"
                 className="py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:font-bold"
               >
-                Company Folder
+                {t("Customers.Company Folder")}
               </Tabs.Trigger>
             </Tabs.List>
 
@@ -135,7 +139,7 @@ export default function AddCustomerModal() {
                   {/* Name */}
                   <div className="flex flex-col gap-2">
                     <label className="textColor ms-14 text-sm">
-                      Customer name
+                      {t("Customers.Customer Name")}
                     </label>
                     <input
                       type="text"
@@ -144,7 +148,6 @@ export default function AddCustomerModal() {
                       name="company"
                       value={formik.values.company}
                       className="textColor w-[85%] border-1 p-2 rounded-md mx-auto focus:outline-none"
-                      placeholder="Customer Name"
                     />
                   </div>
 
@@ -152,7 +155,7 @@ export default function AddCustomerModal() {
                   <div className="flex w-[85%] mx-auto gap-4">
                     {/* Logo */}
                     <div className="w-1/2 flex flex-col gap-2">
-                      <p className="textColor text-sm">Logo</p>
+                      <p className="textColor text-sm">{t("Customers.Logo")}</p>
                       <label
                         htmlFor="file-upload"
                         className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
@@ -177,7 +180,7 @@ export default function AddCustomerModal() {
                     </div>
                     {/* Price */}
                     <div className="textColor w-1/2 flex flex-col justify-end">
-                      <label className="text-sm mb-1">Price Type</label>
+                      <label className="text-sm mb-1">{t("Customers.Price Type")}</label>
                       <select
                         name="default_price_type"
                         value={formik.values.default_price_type}
@@ -201,7 +204,7 @@ export default function AddCustomerModal() {
                     onClick={() => handleAddCustomer}
                     className="px-8 backGroundColor text-white rounded-md p-2 cursor-pointer hover:bg-white! hover:text-[#1243AF] border duration-300 transition-all"
                   >
-                    Save
+                    {t("Save")}
                   </button>
                 </div>
               </form>

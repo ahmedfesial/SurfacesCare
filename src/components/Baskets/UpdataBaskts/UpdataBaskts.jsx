@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../../../../config';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
+import { t } from 'i18next';
 
 
 
@@ -43,7 +44,6 @@ export default function UpdataBaskts({updateBaskets , setUpdateBaskets , Baskets
 
 
 
-
   return (
     <Dialog.Root open={updateBaskets} onOpenChange={setUpdateBaskets}>
           <Dialog.Portal>
@@ -59,7 +59,7 @@ export default function UpdataBaskts({updateBaskets , setUpdateBaskets , Baskets
                     value="basic"
                     className="py-2 px-4 ms-4 data-[state=active]:border-b-2 data-[state=active]:font-bold"
                   >
-                    Update Baskets
+                    {t("Basket.Update Basket")}
                   </Tabs.Trigger>
                 
                 </Tabs.List>
@@ -69,7 +69,7 @@ export default function UpdataBaskts({updateBaskets , setUpdateBaskets , Baskets
                     <form action="" onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-2 w-[80%] mx-auto my-4">
                     <label className="text-[#1243AF] text-md font-light">
-                      Basket name
+                      {t("Basket.Basket Name")}
                     </label>
                     <input
                       type="text"
@@ -86,7 +86,7 @@ export default function UpdataBaskts({updateBaskets , setUpdateBaskets , Baskets
                 type="submit"
                 className=" me-14 px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
               >
-                Save
+                {t("Save")}
               </button>
             </div>
             </form>

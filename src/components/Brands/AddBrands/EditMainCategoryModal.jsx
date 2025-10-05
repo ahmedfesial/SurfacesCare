@@ -6,8 +6,10 @@ import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../../../config";
 import { useFormik } from "formik";
 import * as Dialog from "@radix-ui/react-dialog";
+import { t } from "i18next";
 
 export default function EditMainCategoryModal({ open, onOpenChange, mainCategory }) {
+
   const token = localStorage.getItem("userToken");
   const queryClient = useQueryClient();
   const [imagePreview, setImagePreview] = useState("");
@@ -106,12 +108,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
           onEscapeKeyDown={() => onOpenChange?.(false)}
         >
           <div className="p-4 md:p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-[#1243AF]">Edit Main Category</h2>
-              <Dialog.Close className="text-gray-500 hover:text-gray-700 text-2xl">
-                ×
-              </Dialog.Close>
-            </div>
+            
             
             <form onSubmit={formik.handleSubmit} className="h-[500px] flex flex-col justify-between">
         <div className="space-y-4">
@@ -122,7 +119,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
             value={formik.values.brand_id || ""}
             className="w-full rounded-md p-1 border textColor"
           >
-            <option value="">Select Brand</option>
+            <option value="">{t("Brand.Select Brand")}</option>
             {brandsData?.map((brand) => (
               <option key={brand.id} value={brand.id}>
                 {brand.name_en}
@@ -164,7 +161,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
           {/* Cover + Color */}
           <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
             <div className="flex flex-col w-full md:w-1/2">
-              <label htmlFor="edit_main_image_url"> Cover</label>
+              <label htmlFor="edit_main_image_url">{t("Brand.Cover")}</label>
               <div className="flex flex-col gap-2">
                 {imagePreview && (
                   <img
@@ -184,8 +181,8 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
                 />
               </div>
             </div>
-            <div className="flex flex-col w-full md:w-1/2">
-              <label htmlFor="edit_main_color_code"> Color</label>
+            <div className="flex flex-col w-full md:w-1/2 mt-22">
+              <label htmlFor="edit_main_color_code">{t("Brand.Choose Color")}</label>
               <input
                 id="edit_main_color_code"
                 name="color_code"
@@ -193,7 +190,7 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.color_code}
-                className="border w-full h-12 my-1 rounded-md"
+                className="border w-full h-9 my-1 rounded-md"
               />
             </div>
           </div>
@@ -201,18 +198,12 @@ export default function EditMainCategoryModal({ open, onOpenChange, mainCategory
         
         {/* Update MainCategory Button */}
         <div className="flex justify-end mt-6 gap-4">
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            className="px-8 bg-gray-500 text-white rounded-md p-2 cursor-pointer hover:bg-gray-600 duration-300 transition-all"
-          >
-            Cancel
-          </button>
+          
           <button
             className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
             type="submit"
           >
-            Update Main Category
+            {t("Save")}
           </button>
         </div>
             </form>

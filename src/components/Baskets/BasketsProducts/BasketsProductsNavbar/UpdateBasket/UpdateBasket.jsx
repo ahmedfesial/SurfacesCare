@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../../../../Context/CartContext";
+import { t } from "i18next";
 
 
 export default function UpdateBasket() {
@@ -26,7 +27,7 @@ export default function UpdateBasket() {
       className="backGroundColor text-white! gap-2 textColor rounded-lg px-4 py-1 me-2 cursor-pointer hover:bg-white! hover:text-[#1243AF]!  duration-300 transition-all"
       onClick={handleUpdateClick}
     >
-      Update
+      {t("Update")}
     </button>
   );
 }

@@ -9,13 +9,14 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
 import EditTemplateModal from "../AddTemplate/EditTemplateModal";
+import { useTranslation } from "react-i18next";
 
 export default function DataTableTemplate() {
 
 
   let token = localStorage.getItem("userToken");
   const { searchTerm } = useContext(CartContext);
-
+  let {t , i18n} = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editTemplate, setEditTemplate] = useState(null);
@@ -128,17 +129,17 @@ export default function DataTableTemplate() {
       >
         <table
           cellPadding="12"
-          className="leading-12 w-full table-fixed border-collapse"
+          className="w-full border-collapse table-auto" dir={i18n.language === "ar" ? "rtl" : "ltr"}
         >
           <thead className="textColor bg-[#EBEBEB]">
-            <tr className="text-left">
-              <th className="font-semibold rounded-l-xl text-sm w-[150px] p-4">
-                ID
+            <tr className={i18n.language === "ar" ? "text-right" : "text-left"}>
+              <th className={`w-[150px] font-semibold text-sm p-4 ${i18n.language === "ar" ? "rounded-r-xl" : "rounded-l-xl"}`}>
+                {t("Basket.Id")}
               </th>
-              <th className="font-semibold text-sm w-[200px]">Name</th>
-              <th className="font-semibold text-sm w-auto">Description</th>
-              <th className="font-semibold text-sm w-[150px] rounded-r-xl ps-14">
-                Action
+              <th className="font-semibold text-sm w-[200px]">{t("Name")}</th>
+              <th className="font-semibold text-sm w-auto">{t("Brand.Description")}</th>
+              <th className={`w-[150px] ps-14 font-semibold text-sm text-center ${i18n.language === "ar" ? "rounded-l-xl" : "rounded-r-xl"}`}>
+                {t("Action")}
               </th>
             </tr>
           </thead>
@@ -164,7 +165,7 @@ export default function DataTableTemplate() {
                   }`}
                 >
                   {/* Logo */}
-                  <td className="ps-8">{template.id}</td>
+                  <td className="ps-8 p-4">{template.id}</td>
 
                   {/* Name */}
                   <td className="truncate">{template.name}</td>
@@ -214,11 +215,11 @@ export default function DataTableTemplate() {
       </div>
 
       {/* Pagination */}
-      <div className="w-[93%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
+      <div className="w-[90%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
         {/* User Count */}
         <div className="mt-4">
           <span className="text-sm font-light text-gray-500">
-            {currentRows.length} Template on this Page
+            {currentRows.length} {t("Template.Template on this Page")}
           </span>
         </div>
 
@@ -238,7 +239,7 @@ export default function DataTableTemplate() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Previous
+                {t("Previous")}
               </button>
             </li>
 
@@ -273,7 +274,7 @@ export default function DataTableTemplate() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Next
+                {t("Next")}
               </button>
             </li>
           </ul>

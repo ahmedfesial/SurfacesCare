@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { CiFilter } from "react-icons/ci";
 import { RiResetLeftLine } from "react-icons/ri";
+import { t } from "i18next";
 
 export default function FilterPanel({ onFilter }) {
   const token = localStorage.getItem("userToken");
@@ -133,7 +134,7 @@ export default function FilterPanel({ onFilter }) {
             <Disclosure.Button className="textColor flex w-full justify-between items-center rounded-md cursor-pointer bg-[#ffffff] text-left text-sm font-medium  focus:outline-none p-2">
               <div className="flex items-center gap-4 font-bold ms-4">
                 <CiFilter className="text-xl" />
-                <span className="text-lg font-light">Filter</span>
+                <span className="text-lg font-light">{t("Filter.Filter")}</span>
               </div>
               <ChevronUpIcon
                 className={`${
@@ -168,7 +169,7 @@ export default function FilterPanel({ onFilter }) {
                   onChange={handleBrandChange}
                   className="w-[36%] rounded-md p-2 border text-[#1234AF90]"
                 >
-                  <option>Brand</option>
+                  <option>{t("Filter.Choose Brand")}</option>
                   {Brands?.map((brand) => (
                     <option key={brand.id} value={brand.id}>
                       {brand.name_en}
@@ -181,7 +182,7 @@ export default function FilterPanel({ onFilter }) {
                   onChange={handleMainCategoryChange}
                   className="w-[36%] rounded-md p-2 border text-[#1234AF90]"
                 >
-                  <option value="">Main Category</option>
+                  <option value="">{t("Filter.Choose Main Category")}</option>
                   {filteredMainCategories?.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name_en}
@@ -195,7 +196,7 @@ export default function FilterPanel({ onFilter }) {
                   onChange={handleChange}
                   className="w-[36%] rounded-md p-2 border text-[#1234AF90]"
                 >
-                  <option value="">Sub Category</option>
+                  <option value="">{t("Filter.Choose Sub Category")}</option>
                   {filteredSubCategories?.map((sub) => (
                     <option key={sub.id} value={sub.id}>
                       {sub.name_en}
@@ -209,13 +210,13 @@ export default function FilterPanel({ onFilter }) {
                   onClick={handleReset}
                   className="bg-white flex items-center justify-center gap-2 text-[#DC2626] px-6 py-2 cursor-pointer rounded-md hover:bg-[#DC2626] hover:text-white border duration-300 transition-all"
                 >
-                  <RiResetLeftLine className="text-xl" /> Reset
+                  <RiResetLeftLine className="text-xl" /> {t("Filter.Reset")}
                 </button>
                 <button
                   onClick={handleFilter}
                   className="backGroundColor flex justify-center items-center gap-2 text-white px-6 py-2 cursor-pointer rounded-md hover:bg-white! hover:text-[#1243AF] border duration-300 transition-all"
                 >
-                  <CiFilter className="text-xl" /> Filter
+                  <CiFilter className="text-xl" /> {t("Filter.Filter")}
                 </button>
               </div>
             </Disclosure.Panel>

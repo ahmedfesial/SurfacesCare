@@ -7,10 +7,14 @@ import { CartContext } from "../../../Context/CartContext";
 import dayjs from "dayjs";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 
 export default function DataTableMembers() {
+
+
   let token = localStorage.getItem("userToken");
+  let {t , i18n} = useTranslation();
   const { searchTerm } = useContext(CartContext);
   let queryUser = useQueryClient();
   
@@ -99,20 +103,20 @@ export default function DataTableMembers() {
         className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8 
         pt-4 font-light text-xs rounded-xl mt-16 min-h-[900px]"
       >
-        <table cellPadding="12" className="w-full border-collapse table-auto">
+        <table cellPadding="12" className="w-full border-collapse table-auto" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
           <thead className="textColor bg-[#EBEBEB]">
-            <tr className="text-left ">
-              <th className="w-[20%] font-semibold text-sm rounded-l-xl p-4">
-                Name
+            <tr className={i18n.language === "ar" ? "text-right" : "text-left"}>
+              <th className={`w-[70px] font-semibold text-sm p-4 ${i18n.language === "ar" ? "rounded-r-xl" : "rounded-l-xl"}`}>
+                {t("Name")}
               </th>
-              <th className="w-[25%] font-semibold text-sm">Email</th>
-              <th className="w-[20%] font-semibold text-sm">Telephone</th>
-              <th className="w-[20%] font-semibold text-sm ps-6">Last Login</th>
+              <th className="w-[20%] font-semibold text-sm">{t("Email")}</th>
+              <th className="w-[20%] font-semibold text-sm">{t("Telephone")}</th>
+              <th className="w-[20%] font-semibold text-sm ps-6">{t("Member.Last Login")}</th>
               <th className="w-[15%] font-semibold text-sm ps-4">
-                Status
+                {t("Status")}
               </th>
-              <th className="w-[15%] font-semibold text-sm ps-4 rounded-r-xl pe-4">
-                Action
+              <th className={`w-[100px] font-semibold text-sm text-center ${i18n.language === "ar" ? "rounded-l-xl" : "rounded-r-xl"}`}>
+                {t("Action")}
               </th>
             </tr>
           </thead>
@@ -131,7 +135,7 @@ export default function DataTableMembers() {
             ) : (
               currentRows.map((user) => (
                 <tr key={user.id} className="border-b-1 border-[#00000020]">
-                  <td className="truncate ps-6 py-4">{user.name}</td>
+                  <td className="truncate ps-4 py-4">{user.name}</td>
                   <td className="truncate">{user.email}</td>
                   <td className="truncate">{user.phone}</td>
                   <td className="truncate">
@@ -159,11 +163,11 @@ export default function DataTableMembers() {
 
         {/* أزرار الصفحات */}
       </div>
-      <div className="w-[93%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
+      <div className="w-[90%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
         {/* User Count */}
         <div className="mt-4">
           <span className="text-sm font-light text-gray-500">
-            {currentRows.length} Member on this Page
+            {currentRows.length} {t("Member.Member on this Page")}
           </span>
         </div>
 
@@ -183,7 +187,7 @@ export default function DataTableMembers() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Previous
+                {t("Previous")}
               </button>
             </li>
 
@@ -218,7 +222,7 @@ export default function DataTableMembers() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Next
+                {t("Next")}
               </button>
             </li>
           </ul>

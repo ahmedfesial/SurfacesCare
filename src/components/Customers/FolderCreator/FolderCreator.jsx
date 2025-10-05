@@ -5,8 +5,12 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 export default function FolderCreator({ clientId, opened }) {
+
+  let {t} = useTranslation();
+
   let token = localStorage.getItem("userToken");
 
   let queryClient = useQueryClient();
@@ -76,7 +80,7 @@ export default function FolderCreator({ clientId, opened }) {
           >
             <div className="w-full">
               <span className="flex items-center gap-2">
-                Upload Files
+                {t("Customers.Upload Files")}
                 <MdOutlineFileUpload />
               </span>
             </div>
@@ -107,7 +111,7 @@ export default function FolderCreator({ clientId, opened }) {
               className=" bg-blue-100 rounded-md textColor border border-blue-400 hover:bg-blue-200 transition-all duration-200 py-1 px-4 flex items-center  cursor-pointer font-light w-full"
             >
               <span className="flex justify-between items-center gap-2">
-                New Folder <FolderPlus size={16} />
+                {t("Customers.New Folder")} <FolderPlus size={16} />
               </span>
             </label>
             <input

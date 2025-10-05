@@ -185,7 +185,7 @@ export default function SubCategory() {
                             
 
                             <div className="w-full aspect-square overflow-hidden rounded-lg">
-                              <div className="absolute top-2 right-2 flex gap-3 z-20">
+                              <div className="absolute top-2 right-2 flex gap-3">
                               <button onClick={(e) => handleShare(e, product)}>
                                 <BsShare className="text-lg text-gray-600 cursor-pointer hover:text-[#11ADD1]" />
                               </button>

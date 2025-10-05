@@ -1,4 +1,6 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
 const Dashboard = React.lazy(() => import("../Dashboard/Dashboard"));
 const MainNavbar = React.lazy(() => import("./MainNavbar/MainNavbar"));
 const ChartProduct = React.lazy(() => import("./MainCharts/ChartProduct"));
@@ -8,29 +10,43 @@ const MainCatalogs = React.lazy(() => import("./MainCatalogs/MainCatalogs"));
 const MainBaskets = React.lazy(() => import("./MainBaskets/MainBaskets"));
 
 export default function Main() {
+  const { t, i18n } = useTranslation();
+
+  // Dir Page Language
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
   return (
-    <section>
-      <div className="grid grid-cols-[270px_1fr]">
-        {/*Slid Bar  */}
-        <div>
+    <section className="min-h-screen">
+      <div className="grid min-h-screen grid-cols-[270px_1fr]">
+        {/* Sidebar */}
+        <div
+          className={`${
+            i18n.language === "ar" ? "order-1" : "order-2"
+          }`}
+        >
           <Dashboard />
         </div>
 
-        <div>
-          {/*Navbar*/}
-          <div>
-            <MainNavbar />
-          </div>
+        {/* Main Content */}
+        <div
+          className={`${
+            i18n.language === "ar" ? "order-1" : "order-2"
+          }`}
+        >
+          {/* Navbar */}
+          <MainNavbar />
 
           {/* Content */}
           <div className="mt-58">
             <h1 className="w-[90%] mx-auto font-bold border-t pt-6 border-[#00000030] text-2xl mt-6">
-              Analytics
+              {t("analytics")}
             </h1>
-            <div className="w-[95%]! sm:w-[90%]! md:w-[80%]! lg:w-[70%] xl:w-[80%]! shadow  mx-auto mt-8 bg-white rounded-md">
-              {/* Title */}
 
-              {/* Charts */}
+            {/* Charts */}
+            <div className="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[80%] shadow mx-auto mt-8 bg-white rounded-md">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="flex justify-center">
                   <div className="w-full max-w-sm">
@@ -52,7 +68,7 @@ export default function Main() {
               </div>
             </div>
 
-            {/*Catalogs*/}
+            {/* Catalogs */}
             <div className="my-8">
               <MainCatalogs />
             </div>

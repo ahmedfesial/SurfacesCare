@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { CartContext } from "../../../../Context/CartContext";
+import { t } from "i18next";
+
 
 export default function ActionNavbar() {
 
@@ -108,7 +110,7 @@ export default function ActionNavbar() {
         collapsible
       >
         <AccordionItem value="item-1">
-          <AccordionTrigger>Action</AccordionTrigger>
+          <AccordionTrigger>{t("Action")}</AccordionTrigger>
           <AccordionContent>
             <div>
               <div className="w-[90%] mx-auto textColor h-[140px]">
@@ -117,7 +119,7 @@ export default function ActionNavbar() {
                   value={selectedTemplate}
                   onChange={(e) => setSelectedTemplate(e.target.value)}
                 >
-                  <option value="">Select Template</option>
+                  <option value="">{t("Catalog.Select Template")}</option>
                   {data?.map((template) => (
                     <option key={template.id} value={template.id}>
                       {template.name}
@@ -130,7 +132,7 @@ export default function ActionNavbar() {
                   id=""
                   className="w-[48%] border rounded-md p-2"
                 >
-                  <option value="">Select Languages</option>
+                  <option value="">{t("Catalog.Select Languages")}</option>
                 </select>
 
                 <div className="mt-8 flex justify-end gap-4 me-5">
@@ -138,14 +140,14 @@ export default function ActionNavbar() {
                     onClick={handleViewCatalog}
                     className="cursor-pointer bg-white textColor py-2 px-8 rounded-md border hover:text-white! hover:bg-[#1243AF]! duration-300 transition-all"
                   >
-                    View Catalog as PDF
+                    {t("Catalog.View Catalog as PDF")}
                   </button>
 
                   <button
                     onClick={convertCatalogToBasket}
                     className="text-red-600 flex gap-2 items-center bg-white py-2 cursor-pointer px-8 rounded-md hover:text-white hover:bg-red-600 border duration-300 transition-all"
                   >
-                    Convert to Basket <RiDeleteBin6Line />
+                    {t("Catalog.Convert to Basket")} <RiDeleteBin6Line />
                   </button>
                 </div>
               </div>

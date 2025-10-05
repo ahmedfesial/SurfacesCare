@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { t } from "i18next";
 
 export default function EditTemplateModal({ 
   isOpen, 
@@ -81,7 +82,6 @@ export default function EditTemplateModal({
           throw err;
         }
       };
-
       // Upload new images if provided
       if (values.startImages && values.startImages.length > 0) {
         await uploadGroup(values.startImages, "start");
@@ -135,19 +135,6 @@ export default function EditTemplateModal({
   // Load existing images when template details are fetched
   useEffect(() => {
     if (templateDetails) {
-      // Note: Adjust the property names based on your actual API response structure
-      // Expected API response structure:
-      // {
-      //   template: {
-      //     id: number,
-      //     name: string,
-      //     description: string,
-      //     start_images: [{ id: number, url: string, path: string }],
-      //     end_images: [{ id: number, url: string, path: string }],
-      //     product_images: [{ id: number, url: string, path: string }],
-      //     client_images: [{ id: number, url: string, path: string }]
-      //   }
-      // }
       setExistingImages({
         startImages: templateDetails.start_images || [],
         endImages: templateDetails.end_images || [],
@@ -195,15 +182,15 @@ export default function EditTemplateModal({
                   value="basic"
                   className="py-2 px-4 ms-4 text-sm font-medium border-b-2"
                 >
-                  Edit Template
+                  {t("Template.Update Template")}
                 </Tabs.Trigger>
               </Tabs.List>
 
               <Tabs.Content value="basic" className="p-4 md:p-6">
                 {isLoadingDetails ? (
-                  <div className="flex justify-center items-center py-8">
+                  <div className="flex justify-center items-center py-8 gap-2">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1243AF]"></div>
-                    <span className="ml-2 text-sm text-gray-600">Loading template details...</span>
+                    <span className="ml-2 text-sm text-gray-600">{t("Template.Loading template details")}...</span>
                   </div>
                 ) : (
                 <div className="w-full mx-auto">
@@ -214,7 +201,7 @@ export default function EditTemplateModal({
                         htmlFor="name"
                         className="block mb-2 text-sm font-light"
                       >
-                        Name
+                        {t("Name")}
                       </label>
                       <input
                         onChange={formik.handleChange}
@@ -232,7 +219,7 @@ export default function EditTemplateModal({
                         htmlFor="description"
                         className="block mb-2 text-sm font-light"
                       >
-                        Description
+                        {t("Brand.Description")}
                       </label>
                       <input
                         onChange={formik.handleChange}
@@ -250,7 +237,7 @@ export default function EditTemplateModal({
                   {/*Start Image Cover*/}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Start Images
+                      {t("Template.Upload Start Images")}
                     </label>
                     
                     {/* Existing Start Images */}
@@ -279,7 +266,6 @@ export default function EditTemplateModal({
                     )}
                     
                     <label className="block mb-2 text-sm font-light">
-                      Upload New Start Images (Optional)
                     </label>
                     <input
                       type="file"
@@ -308,7 +294,7 @@ export default function EditTemplateModal({
                   {/* End Images Cover */}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      End Images
+                     {t("Template.Upload End Images")}
                     </label>
                     
                     {/* Existing End Images */}
@@ -337,7 +323,6 @@ export default function EditTemplateModal({
                     )}
                     
                     <label className="block mb-2 text-sm font-light">
-                      Upload New End Images (Optional)
                     </label>
                     <input
                       type="file"
@@ -363,7 +348,7 @@ export default function EditTemplateModal({
                   {/* Product Image Cover */}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Product Images
+                      {t("Template.Upload Product Image")}
                     </label>
                     
                     {/* Existing Product Images */}
@@ -392,7 +377,6 @@ export default function EditTemplateModal({
                     )}
                     
                     <label className="block mb-2 text-sm font-light">
-                      Upload New Product Images (Optional)
                     </label>
                     <input
                       type="file"
@@ -423,7 +407,7 @@ export default function EditTemplateModal({
                   {/* Client Image Cover */}
                   <div className="mb-6">
                     <label className="block mb-2 text-sm font-light">
-                      Client Images
+                      {t("Template.Upload Client Image")}
                     </label>
                     
                     {/* Existing Client Images */}
@@ -452,7 +436,6 @@ export default function EditTemplateModal({
                     )}
                     
                     <label className="block mb-2 text-sm font-light">
-                      Upload New Client Images (Optional)
                     </label>
                     <input
                       type="file"
@@ -485,18 +468,12 @@ export default function EditTemplateModal({
             </Tabs.Root>
 
             <div className="flex justify-end gap-4 p-4 md:p-6 pt-0">
-              <button
-                type="button"
-                onClick={onClose}
-                className="px-6 bg-gray-200 text-gray-700 rounded-md p-2 cursor-pointer hover:bg-gray-300 duration-300 transition-all"
-              >
-                Cancel
-              </button>
+             
               <button
                 type="submit"
                 className="px-6 bg-white text-[#1243AF] rounded-md p-2 cursor-pointer hover:bg-[#1243AF] hover:text-white border duration-300 transition-all"
               >
-                Update Template
+                {t("Template.Update Template")}
               </button>
             </div>
           </form>

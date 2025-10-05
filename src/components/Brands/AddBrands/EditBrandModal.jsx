@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import EditMainCategoryModal from "./EditMainCategoryModal";
 import EditSubCategoryModal from "./EditSubCategoryModal";
 import { useQuery } from "@tanstack/react-query";
+import { t } from "i18next";
 
 export default function EditBrandModal({ open, onOpenChange, brand }) {
   const token = localStorage.getItem("userToken");
@@ -169,39 +170,34 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                 className="py-2 px-4 text-lg md:text-sm font-medium cursor-pointer 
                 data-[state=active]:text-[#1243AF] data-[state=active]:font-bold data-[state=active]:border-b"
               >
-                Update Brand
+                {t("Brand.Update Brand")}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="main-categories"
                 className="py-2 px-4 text-lg md:text-sm font-medium cursor-pointer 
                 data-[state=active]:text-[#1243AF] data-[state=active]:font-bold data-[state=active]:border-b"
               >
-                Main Categories
+                {t("Brand.Edit Main Category")}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="sub-categories"
                 className="py-2 px-4 text-lg md:text-sm font-medium cursor-pointer 
                 data-[state=active]:text-[#1243AF] data-[state=active]:font-bold data-[state=active]:border-b"
               >
-                Sub Categories
+                {t("Brand.Edit Main Category")}
               </Tabs.Trigger>
             </Tabs.List>
 
             {/* Brand Update Tab */}
             <Tabs.Content value="basic" className="p-4 md:p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-[#1243AF]">Update Brand</h2>
-                <Dialog.Close className="text-gray-500 hover:text-gray-700 text-2xl">
-                  ×
-                </Dialog.Close>
-              </div>
+              
 
               <form onSubmit={formik.handleSubmit} className="h-[500px]">
               <div className="space-y-4">
                 {/* Logo + Name EN/AR */}
                 <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
                   <div className="w-full md:w-[30%] flex flex-col gap-2">
-                    <p className="textColor text-sm">Logo</p>
+                    <p className="textColor text-sm">{t("Customers.Logo")}</p>
                     <div className="flex flex-col gap-2">
                       {logoPreview && (
                         <img
@@ -330,7 +326,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                 {/* Cover + Color */}
                 <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
                   <div className="flex flex-col w-full md:w-1/2">
-                    <label htmlFor="edit_background_image_url"> Cover</label>
+                    <label htmlFor="edit_background_image_url">{t("Brand.Cover")}</label>
                     <div className="flex flex-col gap-2">
                       {backgroundPreview && (
                         <img
@@ -351,7 +347,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                     </div>
                   </div>
                   <div className="flex flex-col w-full md:w-1/2">
-                    <label htmlFor="edit_color_code"> Color</label>
+                    <label htmlFor="edit_color_code"> {t("Brand.Choose Color")}</label>
                     <input
                       id="edit_color_code"
                       name="color_code"
@@ -368,17 +364,10 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
               {/* Update Brand Button */}
               <div className="flex justify-end mt-6 gap-4 pb-8">
                 <button
-                  type="button"
-                  onClick={() => onOpenChange(false)}
-                  className="px-8 bg-gray-500 text-white rounded-md p-2 cursor-pointer hover:bg-gray-600 duration-300 transition-all"
-                >
-                  Cancel
-                </button>
-                <button
                   className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
                   type="submit"
                 >
-                  Update Brand
+                  {t("Brand.Update Brand")}
                 </button>
               </div>
             </form>
@@ -386,20 +375,13 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
 
             {/* Main Categories Tab */}
             <Tabs.Content value="main-categories" className="p-4 md:p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-[#1243AF]">Update Main Categories</h2>
-                <Dialog.Close className="text-gray-500 hover:text-gray-700 text-2xl">
-                  ×
-                </Dialog.Close>
-              </div>
+            
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <p className="text-gray-600">
                       Main categories for <strong>{brand?.name_en}</strong>
                     </p>
-                    <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                      {mainCategoriesData?.length || 0} categories
-                    </span>
+                  
                   </div>
                   
                   {mainCategoriesData && mainCategoriesData.length > 0 ? (
@@ -435,7 +417,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                           }}
                           className="px-4 py-2 bg-[#1243AF] text-white rounded-md hover:bg-blue-700 transition-colors"
                         >
-                          Edit
+                          {t("Brand.Edit")}
                         </button>
                       </div>
                     ))}
@@ -455,12 +437,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
 
             {/* Sub Categories Tab */}
             <Tabs.Content value="sub-categories" className="p-4 md:p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-[#1243AF]">Update Sub Categories</h2>
-                <Dialog.Close className="text-gray-500 hover:text-gray-700 text-2xl">
-                  ×
-                </Dialog.Close>
-              </div>
+              
               <div className="space-y-4">
                 
                 {subCategoriesData && subCategoriesData.length > 0 ? (
@@ -486,7 +463,7 @@ export default function EditBrandModal({ open, onOpenChange, brand }) {
                             }}
                             className="px-4 py-2 bg-[#1243AF] text-white rounded-md hover:bg-blue-700 transition-colors"
                           >
-                            Edit
+                            {t("Brand.Edit")}
                           </button>
                         </div>
                       );

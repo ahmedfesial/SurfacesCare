@@ -3,11 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { API_BASE_URL } from "../../../../config";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 
 
 
 export default function ChartTemplates() {
+    const { t } = useTranslation(); 
+  
   let token = localStorage.getItem("userToken");
 
   // Most Template
@@ -31,7 +34,7 @@ export default function ChartTemplates() {
     <>
       <section className=" mt-8 font-extralight rounded-2xl w-[440px] h-[350px] pb-2 px-4  md:max-w-[350px]  md:h-[470px] duration-300 transition-all">
         <p className="textColor my-4 font-light! text-xl">
-          Most Prefered Templates
+          {t('Most Used Templates')}
         </p>
         <div className="flex justify-center items-center mt-8">
           <ResponsiveContainer width="90%" height={240}>
@@ -68,7 +71,7 @@ export default function ChartTemplates() {
           <>
             {Template.map((template, i) => (
               <div key={i}>
-                <div className="mt-13 flex justify-between items-center border-b-1 border-gray-300 pb-1">
+                <div className="my-2 flex justify-between items-center border-b-1 border-gray-300 pb-1">
                   <div className="flex items-center gap-1">
                     <div
                       className="w-[10px] h-[10px] rounded-full"

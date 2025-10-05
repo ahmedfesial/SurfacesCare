@@ -11,10 +11,12 @@ import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
 import AddMainCategory from "./AddMainCategory";
 import AddSubCategoroy from "./AddSubCategoroy";
+import { useTranslation } from "react-i18next";
 
 export default function AddBrands({ open, onOpenChange }) {
-  const token = localStorage.getItem("userToken");
 
+  let {t} = useTranslation();
+  const token = localStorage.getItem("userToken");
   const queryBrand = useQueryClient();
   const [tabValue, setTabValue] = useState("basic");
 
@@ -69,7 +71,7 @@ export default function AddBrands({ open, onOpenChange }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger className="bg-white flex items-center gap-2 mt-2 text-[#1243AF] px-8 py-1 rounded-md cursor-pointer hover:bg-gray-300 duration-300 transition-all me-6">
-        Add  <FaPlus className="text-sm" />
+        {t("Brand.Add")}  <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -89,14 +91,14 @@ export default function AddBrands({ open, onOpenChange }) {
               
              data-[state=active]:text-[#1243AF] data-[state=active]:font-bold data-[state=active]:border-b"
               >
-                Add Brands
+                {t("Brand.Add Brand")}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="settings"
                 className="py-2 px-4 text-lg md:text-sm font-medium cursor-pointer 
             data-[state=active]:text-[#1243AF] data-[state=active]:font-bold data-[state=active]:border-b"
               >
-                Add Main-Categories
+                {t("Brand.Add Main-Categories")}
               </Tabs.Trigger>
               <Tabs.Trigger
                 value="SubCategory"
@@ -104,7 +106,7 @@ export default function AddBrands({ open, onOpenChange }) {
               
              data-[state=active]:text-[#1243AF] data-[state=active]:font-bold data-[state=active]:border-b"
               >
-                Add Sub-Category
+                {t("Brand.Add Sub-Categories")}
               </Tabs.Trigger>
             </Tabs.List>
 
@@ -115,7 +117,7 @@ export default function AddBrands({ open, onOpenChange }) {
                   {/* Logo + Name EN/AR */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
                     <div className="w-full md:w-[30%] flex flex-col gap-2">
-                      <p className="textColor text-sm">Logo</p>
+                      <p className="textColor text-sm">{t("Customers.Logo")}</p>
                       <label
                         htmlFor="file-upload"
                         className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
@@ -246,7 +248,7 @@ export default function AddBrands({ open, onOpenChange }) {
 
                     {/* Cover */}
                     <div className="w-full md:w-1/2 flex flex-col gap-2">
-                      <p className="textColor text-sm">Cover</p>
+                      <p className="textColor text-sm">{t("Brand.Cover")}</p>
                       <label
                         htmlFor="file-upload"
                         className="textColor h-12 border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
@@ -272,7 +274,7 @@ export default function AddBrands({ open, onOpenChange }) {
 
                     {/* Catalog PDF */}
                     <div className="w-full md:w-1/2 flex flex-col gap-2">
-                      <p className="textColor text-sm">Catalog PDF</p>
+                      <p className="textColor text-sm">{t("Brand.Catalog")} PDF</p>
                       <label
                         htmlFor="Catalog-upload"
                         className="textColor h-12 border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light w-full"
@@ -317,7 +319,7 @@ export default function AddBrands({ open, onOpenChange }) {
       >
         <div className="flex items-center gap-2">
           <FaPalette className="text-lg" />
-          <span className=" font-medium">Choose Color</span>
+          <span className=" font-medium">{t("Brand.Choose Color")}</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -345,7 +347,7 @@ export default function AddBrands({ open, onOpenChange }) {
                     className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
                     type="submit"
                   >
-                    Add Brand
+                    {t("Save")}
                   </button>
                 </div>
               </form>
@@ -358,7 +360,7 @@ export default function AddBrands({ open, onOpenChange }) {
 
             {/* Sub-Categories */}
             <Tabs.Content value="SubCategory" className="p-4 md:p-6">
-              <AddSubCategoroy />
+              <AddSubCategoroy /> 
             </Tabs.Content>
           </Tabs.Root>
         </Dialog.Content>

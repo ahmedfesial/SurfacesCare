@@ -8,11 +8,13 @@ import { BiEditAlt } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
 import { CartContext } from "../../../Context/CartContext";
 import { LuTrash2 } from "react-icons/lu";
+import { useTranslation } from "react-i18next";
 const UpdataBaskts = React.lazy(()=> import('../UpdataBaskts/UpdataBaskts'))
 
 export default function DataTableBaskets() {
-  let token = localStorage.getItem("userToken");
 
+  let {t , i18n} = useTranslation();
+  let token = localStorage.getItem("userToken");
   // Get searchTerm from context
   const { searchTerm } = useContext(CartContext);
   const [updateBaskets, setUpdateBaskets] = useState(false); // Update Baskets
@@ -110,17 +112,17 @@ export default function DataTableBaskets() {
         className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8 
         pt-4 font-light text-xs rounded-xl mt-16 min-h-[900px]"
       >
-        <table cellPadding="12" className="leading-12 w-full">
+        <table cellPadding="12" className="w-full border-collapse table-auto" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
           <thead className="textColor bg-[#EBEBEB]">
-            <tr className="text-left">
-              <th className="w-[70px] text-sm font-semibold p-4 rounded-l-xl">
-                ID
+            <tr className={i18n.language === "ar" ? "text-right" : "text-left"}>
+              <th className={`font-semibold text-sm p-4 ${i18n.language === "ar" ? "rounded-r-xl" : "rounded-l-xl"}`}>
+                {t("Basket.Id")}
               </th>
-              <th className="w-[200px] text-sm font-semibold">Basket Name</th>
-              <th className="w-[400px] text-sm font-semibold">Customer Name</th>
-              <th className="w-[100px] text-sm font-semibold">Product</th>
-              <th className="w-[60px] text-sm font-semibold rounded-r-xl">
-                Action
+              <th className="w-[200px] text-sm font-semibold">{t("Basket.Basket Name")}</th>
+              <th className="w-[400px] text-sm font-semibold">{t("Basket.Customer Name")}</th>
+              <th className="w-[100px] text-sm font-semibold">{t("Basket.Product")}</th>
+              <th className={`font-semibold text-sm text-center ${i18n.language === "ar" ? "rounded-l-xl" : "rounded-r-xl"}`}>
+                {t("Basket.Action")}
               </th>
             </tr>
           </thead>
@@ -145,14 +147,14 @@ export default function DataTableBaskets() {
                       setUpdateBaskets(true);
                       setBasketsId(basket.id);
                     }}
-                    className="truncate textColor cursor-pointer"
+                    className="truncate textColor cursor-pointer p-4"
                   >
                     {(basket?.name || "").split(" ").slice(0, 2).join(" ")}
                     <BiEditAlt className="inline-block" />
                   </td>
                   <td>{basket.client_name}</td>
                   <NavLink to={`/BasketsProducts/${basket.id}`}>
-                    <td className="textColor ps-6 font-semibold cursor-pointer">
+                    <td className="textColor ps-6 font-semibold cursor-pointer w-full pt-4">
                       {basket.product_count}
                     </td>
                   </NavLink>
@@ -175,11 +177,11 @@ export default function DataTableBaskets() {
         />
 
       {/* Pigniation  */}
-      <div className="w-[93%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
+      <div className="w-[90%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
         {/* User Count */}
         <div className="mt-4">
           <span className="text-sm font-light text-gray-500">
-            {currentRows.length} Baskets on this Page
+            {currentRows.length} {t("Basket.Basket on this Page")}
           </span>
         </div>
 
@@ -199,7 +201,7 @@ export default function DataTableBaskets() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Previous
+                {t("Previous")}
               </button>
             </li>
 
@@ -234,7 +236,7 @@ export default function DataTableBaskets() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Next
+                {t("Next")}
               </button>
             </li>
           </ul>

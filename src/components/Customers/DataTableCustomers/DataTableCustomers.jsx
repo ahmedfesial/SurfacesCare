@@ -8,9 +8,12 @@ import UpdateClientDialog from "../UpdateClientDialog/UpdateClientDialog";
 import { FaSpinner } from "react-icons/fa";
 import { CartContext } from "../../../Context/CartContext";
 import { LuImage } from "react-icons/lu";
+import { useTranslation } from "react-i18next";
 
 export default function DataTableCustomers() {
   let token = localStorage.getItem("userToken");
+  const { t, i18n } = useTranslation();
+  
 
   const { searchTerm } = useContext(CartContext);
 
@@ -80,13 +83,13 @@ export default function DataTableCustomers() {
       >
         {/* Desktop Table */}
         <div className="hidden md:block overflow-x-auto">
-          <table cellPadding="12" className="w-full border-collapse table-auto">
+          <table cellPadding="12" className="w-full border-collapse table-auto" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
             <thead className="textColor bg-[#EBEBEB]">
-              <tr className="text-left">
-                <th className="p-4 rounded-l-xl text-sm font-semibold">ID</th>
-                <th className="font-semibold text-sm">Name</th>
-                <th className="font-semibold text-sm">Logo</th>
-                <th className="font-semibold text-sm rounded-r-xl">Status</th>
+              <tr className={i18n.language === "ar" ? "text-right" : "text-left"}>
+                <th className={`font-semibold text-sm p-4 ${i18n.language === "ar" ? "rounded-r-xl" : "rounded-l-xl"}`}>{t("Customers.Id")}</th>
+                <th className="font-semibold text-sm">{t("Customers.Name")}</th>
+                <th className="font-semibold text-sm">{t("Customers.Logo")}</th>
+                <th className={`font-semibold text-sm text-center ${i18n.language === "ar" ? "rounded-l-xl" : "rounded-r-xl"}`}>{t("Status")}</th>
               </tr>
             </thead>
 
@@ -208,11 +211,11 @@ export default function DataTableCustomers() {
         />
       </div>
 
-      <div className="w-[93%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
+      <div className="w-[90%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
         {/* User Count */}
         <div className="mt-4">
           <span className="text-sm font-light text-gray-500">
-            {currentRows.length} Customers on this Page
+            {currentRows.length} {t("Customers.Customers on this Page")}
           </span>
         </div>
 
@@ -232,7 +235,7 @@ export default function DataTableCustomers() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Previous
+                {t("Previous")}
               </button>
             </li>
 
@@ -267,7 +270,7 @@ export default function DataTableCustomers() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Next
+                {t("Next")}
               </button>
             </li>
           </ul>

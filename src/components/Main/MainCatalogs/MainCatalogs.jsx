@@ -4,10 +4,16 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
-
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
+
+
+
 
 export default function MainCatalogs() {
+
+  const { t } = useTranslation(); 
+
   let token = localStorage.getItem("userToken");
 
   function getAllCatalogs() {
@@ -60,17 +66,17 @@ export default function MainCatalogs() {
     <section>
       <div className="w-[80%] mx-auto px-4 py-2 bg-white rounded-2xl shadow hover:shadow-2xl duration-300 transition-all">
         <h2 className="textColor text-2xl text-center md:text-left md:ms-8 font-semibold pt-6">
-          Catalogs
+          {t("nav.Catalogs")}
         </h2>
 
         <div className="mt-8 w-full mx-auto">
           {/* Title */}
           <div className="flex flex-col md:flex-row sm:w-[20%] xl:w-[60%] justify-between text-center md:text-left">
             <h3 className="textColor sm:ms-0 xl:ms-10 text-xl w-full md:w-auto">
-              All Catalogs
+              {t("All Catalogs")}
             </h3>
             <h3 className="textColor text-xl w-full md:w-auto mt-4 md:mt-0 ">
-              Last Catalogs
+              {t("Last Catalogs")}
             </h3>
           </div>
 
@@ -80,8 +86,8 @@ export default function MainCatalogs() {
             <div className="mt-4 w-full lg:w-[45%] mx-auto">
               {/* header */}
               <div className="backGroundColor flex font-light justify-between p-2 items-center text-white rounded-md">
-                <h3 className="ms-4">Catalog Name</h3>
-                <h3 className="me-4">Creation Date</h3>
+                <h3 className="ms-4">{t("Catalog Name")}</h3>
+                <h3 className="me-4">{t("Creation Date")}</h3>
               </div>
 
               {/* Content */}
@@ -155,8 +161,8 @@ export default function MainCatalogs() {
             <div className="mt-4 w-full lg:w-[45%] mx-auto">
               {/* header */}
               <div className="backGroundColor flex justify-between font-light items-center p-2 text-white rounded-md">
-                <h3 className="ms-4">Catalog Name</h3>
-                <h3 className="me-4">Creation Date</h3>
+                <h3 className="ms-4">{t("Catalog Name")}</h3>
+                <h3 className="me-4">{t("Creation Date")}</h3>
               </div>
 
               {Array.isArray(currentRowsRight) &&

@@ -14,9 +14,13 @@ import { API_BASE_URL } from "./../../../config";
 import { useQuery } from "@tanstack/react-query";
 import { CiUser } from "react-icons/ci";
 import { HiOutlineUsers } from "react-icons/hi";
+import { useTranslation } from "react-i18next";
+
+
 
 export default function Dashboard() {
   const [imgError, setImgError] = useState(false);
+  const { t } = useTranslation();
 
   function getProfileUser() {
     let token = localStorage.getItem("userToken");
@@ -34,8 +38,6 @@ export default function Dashboard() {
     select: (data) => data.data.data,
   });
 
-  
-
   const navigate = useNavigate();
 
   function logOut() {
@@ -43,33 +45,39 @@ export default function Dashboard() {
     navigate("/Login");
   }
 
+
+   const { i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
+
   return (
     <section
-  className="bg-[#F8F8F8] shadow-xl p-4 flex flex-col text-xs sm:text-sm md:text-base lg:text-lg 
-  w-full md:w-[270px] md:h-screen lg:rounded-2xl lg:fixed lg:left-2 lg:top-2 lg:bottom-2 
-  lg:h-[calc(100vh-16px)]"
->
-        {/* logo & Elements */}
+      className={`
+        bg-[#F8F8F8] shadow-xl p-4 flex flex-col text-xs sm:text-sm md:text-base lg:text-lg 
+        w-full md:w-[270px] md:h-screen lg:rounded-2xl lg:bottom-2 
+        lg:h-[calc(100vh-16px)]
+        lg:fixed ${isRTL ? "lg:right-2" : "lg:left-2"}
+      `}
+    >
+      {/* logo & Elements */}
       <div className="w-full md:w-auto md:ms-2 md:pt-4">
         {/* logo */}
-        <Link to={'/Main'}>
-        <img
-          src={logo}
-          alt="logo"
-          loading="lazy"
-          className="w-1/2 mx-auto block md:mx-0 md:w-[60%] md:ms-6 md:mt-6"
-        />
+        <Link to={"/Main"}>
+          <img
+            src={logo}
+            alt="logo"
+            loading="lazy"
+            className="w-1/2 mx-auto block md:mx-0 md:w-[60%] md:ms-6 "
+          />
         </Link>
 
         {/* elements */}
-        <div className="textColor w-full mt-4 md:w-auto md:mx-4">
-          {/* NavLinks */}
+        <div className="textColor w-full mt-4 md:w-auto md:mx-4 md:text-sm! 2xl:text-lg!">
           <NavLink
             to={"/Main"}
             className="w-full flex items-center justify-center md:justify-start gap-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <HiArrowTrendingUp className="me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Dashboard</p>
+            <p>{t('nav.Dashboard')}</p>
           </NavLink>
 
           <NavLink
@@ -77,7 +85,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 font-medium hover:scale-110 duration-200 transition-all my-2"
           >
             <HiBolt className="me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Quotation</p>
+            <p>{t('nav.Quotation')}</p>
           </NavLink>
 
           <NavLink
@@ -85,7 +93,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <PiSuitcase className="font-bold me-1 text-lg md:text-xl  rounded-lg md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Customers</p>
+            <p>{t('nav.Customers')}</p>
           </NavLink>
 
           <NavLink
@@ -93,7 +101,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <FiMenu className="font-bold me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Categories</p>
+            <p>{t('nav.Categories')}</p>
           </NavLink>
 
           <NavLink
@@ -101,7 +109,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <MdOutlineShoppingCart className="font-bold me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Products</p>
+            <p>{t('nav.Products')}</p>
           </NavLink>
 
           <NavLink
@@ -109,7 +117,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <RiShoppingBag3Line className="font-bold me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Baskets</p>
+            <p>{t('nav.Baskets')}</p>
           </NavLink>
 
           <NavLink
@@ -117,7 +125,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <FiBook className="font-bold me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">Catalogs</p>
+            <p>{t('nav.Catalogs')}</p>
           </NavLink>
 
           <NavLink
@@ -125,19 +133,19 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all pb-12"
           >
             <IoMdCheckmarkCircleOutline className="font-bold me-1 text-lg md:text-xl  md:ms-4" />
-            <p className="text-xs sm:text-sm md:text-sm">ToDoList</p>
+            <p>{t('nav.ToDoList')}</p>
           </NavLink>
         </div>
       </div>
 
       {/* Settings */}
       <div
-        className={`w-full mt-4 md:w-auto md:mt-0 md:ms-4  ${
+        className={`w-full mt-4 md:w-auto md:mt-0 md:ms-4 md:text-sm! 2xl:text-lg!  ${
           data?.role === "user" ? "invisible" : ""
         } border-t-1 border-[#1243AF]`}
       >
         <p className="font-semibold text-xs sm:text-sm md:text-sm text-center md:text-left md:ms-6 mt-2 text-[#11ADD1] ">
-          Settings
+          {t('nav.Settings')}
         </p>
 
         <div className="textColor mt-2 w-full md:w-auto">
@@ -146,7 +154,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <HiOutlineUsers className="me-1 text-lg md:text-xl  md:ms-6" />
-            <p className="text-xs sm:text-sm md:text-base">Members</p>
+            <p>{t('nav.Members')}</p>
           </NavLink>
 
           <NavLink
@@ -154,7 +162,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <RiBox3Line className="me-1 text-lg md:text-xl  md:ms-6" />
-            <p className="text-xs sm:text-sm md:text-base">Brands</p>
+            <p>{t('nav.Brands')}</p>
           </NavLink>
 
           <NavLink
@@ -162,7 +170,7 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 font-medium hover:scale-110 duration-200 transition-all"
           >
             <MdOutlineShoppingCart className="font-bold me-1 text-lg md:text-xl  md:ms-6" />
-            <p className="text-xs sm:text-sm md:text-base">Product</p>
+            <p>{t('nav.Product')}</p>
           </NavLink>
 
           <NavLink
@@ -170,13 +178,13 @@ export default function Dashboard() {
             className="w-full flex items-center justify-center md:justify-start gap-2 my-2 mb-8 font-medium hover:scale-110 duration-200 transition-all"
           >
             <FaRegSquare className="me-1 text-lg md:text-xl  md:ms-6" />
-            <p className="text-xs sm:text-sm md:text-base">Template</p>
+            <p>{t('nav.Template')}</p>
           </NavLink>
         </div>
       </div>
 
       {/* User */}
-      <div className="textColor w-full flex justify-center md:justify-start md:w-auto md:ms-4 border-t-1 py-5">
+      <div className="textColor w-full flex justify-center md:justify-start md:w-auto md:ms-4 border-t-1 py-5 mt-14">
         <div className="flex items-center gap-2">
           <div className="w-[35px] h-[35px] rounded-lg flex items-center justify-center backGroundColor">
             {!imgError && data?.image ? (
@@ -201,6 +209,9 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* زر تغيير اللغة */}
+      
     </section>
   );
 }

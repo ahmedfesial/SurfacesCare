@@ -1,12 +1,15 @@
 import axios from "axios";
-import React from "react";
+import React  from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { API_BASE_URL } from "./../../../../config";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 
 
 export default function ChartProduct() {
+
+  const { t } = useTranslation();  
 
 
   let token = localStorage.getItem("userToken");
@@ -47,7 +50,7 @@ export default function ChartProduct() {
           font-extralight
         "
       >
-        <p className="textColor my-4 text-xl font-light">Most Used Product</p>
+        <p className="textColor my-4 text-xl font-light">{t('Most Used Product')}</p>
 
         {/* Chart */}
         <div className="flex justify-center items-center mb-9">

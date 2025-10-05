@@ -6,10 +6,14 @@ import { FaSpinner } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { CartContext } from "../../../Context/CartContext";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 export default function DataTableCatalogs() {
-  let token = localStorage.getItem("userToken");
 
+
+  let {t , i18n} = useTranslation();
+
+  let token = localStorage.getItem("userToken");
   const { searchTerm } = useContext(CartContext);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -79,18 +83,18 @@ export default function DataTableCatalogs() {
       >
         <table
           cellPadding="12"
-          className="leading-12 w-full table-fixed border-collapse"
+          className="w-full border-collapse table-auto" dir={i18n.language === "ar" ? "rtl" : "ltr"}
         >
           <thead className="textColor bg-[#EBEBEB]">
-            <tr className="text-left">
-              <th className="w-[70px] p-4 rounded-l-xl font-semibold text-sm">
-                ID
+            <tr className={i18n.language === "ar" ? "text-right" : "text-left"}>
+              <th className={`w-[70px] font-semibold text-sm p-4 ${i18n.language === "ar" ? "rounded-r-xl" : "rounded-l-xl"}`}>
+                {t("Basket.Id")}
               </th>
-              <th className="w-[150px] font-semibold text-sm">Catalog Name</th>
-              <th className="w-[150px] font-semibold text-sm">Customer Name</th>
-              <th className="w-[100px] font-semibold text-sm">Products</th>
-              <th className="w-[100px] font-semibold rounded-r-xl text-sm ps-5">
-                Creation Date
+              <th className="w-[150px] font-semibold text-sm">{t("Catalog Name")}</th>
+              <th className="w-[150px] font-semibold text-sm">{t("Basket.Customer Name")}</th>
+              <th className="w-[100px] font-semibold text-sm">{t("Basket.Product")}</th>
+              <th className={`w-[100px] font-semibold text-sm text-center ${i18n.language === "ar" ? "rounded-l-xl" : "rounded-r-xl"}`}>
+                {t("Creation Date")}
               </th>
             </tr>
           </thead>
@@ -110,7 +114,7 @@ export default function DataTableCatalogs() {
               currentRows.map((catalog) => (
                 <tr key={catalog.id} className="border-b-1 border-[#00000020]">
                   {/* Id */}
-                  <td className="ps-4">{catalog.id}</td>
+                  <td className="p-4">{catalog.id}</td>
 
                   {/* Name Catalog */}
                   <td className="truncate">{catalog.name}</td>
@@ -120,7 +124,7 @@ export default function DataTableCatalogs() {
 
                   {/* product count */}
                   <NavLink to={`/CatalogsProducts/${catalog.id}`}>
-                    <td className="textColor text-center ps-6">
+                    <td className="textColor text-center ps-6 pt-4">
                       {catalog?.basket?.product_count}
                     </td>
                   </NavLink>
@@ -141,11 +145,11 @@ export default function DataTableCatalogs() {
         </table>
       </div>
       {/* أزرار الصفحات */}
-      <div className="w-[93%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
+      <div className="w-[90%] mx-auto flex flex-col sm:flex-row justify-between items-center pb-6 mt-8 sm:mt-4">
         {/* User Count */}
         <div className="mt-4">
           <span className="text-sm font-light text-gray-500">
-            {currentRows.length} Catalogs on this Page
+            {currentRows.length} {t("Catalogs on this Page")}
           </span>
         </div>
 
@@ -165,7 +169,7 @@ export default function DataTableCatalogs() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Previous
+                {t("Previous")}
               </button>
             </li>
 
@@ -200,7 +204,7 @@ export default function DataTableCatalogs() {
                     : "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
-                Next
+                {t("Next")}
               </button>
             </li>
           </ul>

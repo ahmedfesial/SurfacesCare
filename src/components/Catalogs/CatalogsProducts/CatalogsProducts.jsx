@@ -93,7 +93,7 @@ export default function CatalogsProducts() {
                     <div>
                       <div className="shadow-lg bg-white rounded-xl hover:shadow-2xl duration-300 transition-all h-[400px] relative">
                         {/* Icons Top Right */}
-                        <div className="absolute top-2 right-2 flex gap-3 z-10">
+                        <div className="absolute top-2 right-2 flex gap-3">
                           <button onClick={(e) => handleShare(e, product)}>
                             <BsShare className="text-lg text-gray-600 cursor-pointer hover:text-[#11ADD1]" />
                           </button>

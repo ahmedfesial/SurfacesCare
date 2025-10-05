@@ -6,11 +6,13 @@ import React from "react";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../../../config";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 export default function AddMainCategory() {
+
+  let {t} = useTranslation();
   const token = localStorage.getItem("userToken");
   const queryBrand = useQueryClient();
-
   // Get All Brands
   function getAllBrands() {
     return axios.get(`${API_BASE_URL}brands`);
@@ -69,7 +71,7 @@ export default function AddMainCategory() {
             value={formik.values.brand_id || ""}
             className="w-full rounded-md p-1 border textColor"
           >
-            <option value="">Select Brand</option>
+            <option value="">{t("Brand.Select Brand")}</option>
             {data?.map((brand) => (
               <option key={brand.id} value={brand.id}>
                 {brand.name_en}
@@ -110,7 +112,7 @@ export default function AddMainCategory() {
           {/* Cover + Color */}
           <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
             <div className="flex flex-col w-full md:w-1/2">
-              <label htmlFor="background_image_url"> Cover</label>
+              <label htmlFor="background_image_url"> {t("Brand.Cover")}</label>
               <input
                 id="image_url"
                 name="image_url"
@@ -145,7 +147,7 @@ export default function AddMainCategory() {
       >
         <div className="flex items-center gap-2">
           <FaPalette className="text-lg" />
-          <span className=" font-medium">Choose Color</span>
+          <span className=" font-medium">{t("Brand.Choose Color")}</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -170,7 +172,7 @@ export default function AddMainCategory() {
             className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
             type="submit"
           >
-            Add Main Category
+            {t("Save")}
           </button>
         </div>
       </form>

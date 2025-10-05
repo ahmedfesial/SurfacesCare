@@ -8,6 +8,7 @@ import { FaSpinner } from "react-icons/fa";
 import { CartContext } from "../../../Context/CartContext";
 import { GoHeartFill } from "react-icons/go";
 import { BsShare } from "react-icons/bs";
+import { t } from "i18next";
 const Dashboard = React.lazy(() => import("../../Dashboard/Dashboard"));
 const BasketsProductsNavbar = React.lazy(() =>
   import("./BasketsProductsNavbar/BasketsProductsNavbar")
@@ -56,7 +57,6 @@ export default function BasketsProducts() {
     queryFn: getBasketData,
     select: (data) => data.data.data.basket_products,
   });
-
   // Filter products based on submit mode
   const filteredData = submitMode 
     ? data?.filter(product => product.is_selected === true || product.is_selected === 1)
@@ -155,7 +155,7 @@ export default function BasketsProducts() {
                               {/* Product Name */}
                               <p className="textColor text-md text-left font-semibold h-[60px] pb-12">
                                 {product?.product_name}
-                              </p>
+                              </p>  
                               {/* Product With Price */}
                               <div className="flex items-center justify-between mt-4">
                                 {withPrice && (
@@ -167,10 +167,10 @@ export default function BasketsProducts() {
                                 {/* الزر */}
                                 <a
                                   href="#"
-                                  className={`text-white backGroundColor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 text-center 
-      ${withPrice ? "w-[70%]" : "w-full"}`}
+                                  className={`text-white backGroundColor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5  
+                                  ${withPrice ? "w-[70%] ps-4" : "w-full flex justify-center"}`}
                                 >
-                                  Selected
+                                  {t("Basket.Selected")}
                                 </a>
                               </div>
 

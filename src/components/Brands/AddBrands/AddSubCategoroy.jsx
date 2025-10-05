@@ -4,11 +4,14 @@ import React from "react";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../../../config";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 export default function AddSubCategoroy() {
-  const token = localStorage.getItem("userToken");
-  const queryBrand = useQueryClient();
 
+
+  const token = localStorage.getItem("userToken");
+  let {t} = useTranslation();
+  const queryBrand = useQueryClient();
   // Get All MainCategory
   function getAllMainCategory() {
     return axios.get(`${API_BASE_URL}main-categories`);
@@ -58,7 +61,7 @@ export default function AddSubCategoroy() {
             value={formik.values.main_category_id || ""}
             className="w-full rounded-md p-1 border textColor"
           >
-            <option value="">Select Main-Category</option>
+            <option value="">{t("Brand.Select Main-Category")}</option>
             {data?.map((mainCategory) => (
               <option key={mainCategory.id} value={mainCategory.id}>
                 {mainCategory.name_en}
@@ -103,7 +106,7 @@ export default function AddSubCategoroy() {
             className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
             type="submit"
           >
-            Add Sub Category
+            {t("Save")}
           </button>
         </div>
       </form>

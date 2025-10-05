@@ -6,8 +6,13 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { CiSquarePlus } from "react-icons/ci";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 export default function MainBaskets() {
+
+
+  const { t } = useTranslation();
+
   let token = localStorage.getItem("userToken");
 
   function getAllBaskets() {
@@ -94,14 +99,14 @@ export default function MainBaskets() {
       <section>
         <div className="w-[80%] mx-auto px-4 py-2 bg-white rounded-2xl shadow hover:shadow-2xl duration-300 transition-all">
           <h2 className="textColor text-2xl text-center md:text-left md:ms-8 font-semibold pt-6">
-            Baskets
+            {t("Baskets")}
           </h2>
 
           <div className="mt-8 w-full mx-auto">
             {/* Title */}
             <div className="flex xl:w-[60%] md:w-[60%] justify-between text-left">
-              <h3 className="textColor ms-10 text-xl">All Baskets</h3>
-              <h3 className="textColor md:ms-40 text-xl">Last Baskets</h3>
+              <h3 className="textColor ms-10 text-xl">{t("All Baskets")}</h3>
+              <h3 className="textColor md:ms-40 text-xl">{t("Last Baskets")}</h3>
             </div>
 
             {/* Main Div */}
@@ -110,8 +115,8 @@ export default function MainBaskets() {
               <div className="mt-4 w-full lg:w-[45%] mx-auto">
                 {/* header */}
                 <div className="backGroundColor flex font-light justify-between p-2 items-center text-white rounded-md">
-                  <h3 className="ms-4">Basket Name</h3>
-                  <h3 className="me-4">Creation Date</h3>
+                  <h3 className="ms-4">{t("Basket Name")}</h3>
+                  <h3 className="me-4">{t("Creation Date")}</h3>
                 </div>
 
                 {/* Content */}
@@ -185,8 +190,8 @@ export default function MainBaskets() {
               <div className="mt-4 w-full lg:w-[45%] mx-auto">
                 {/* header */}
                 <div className="backGroundColor flex justify-between font-light items-center p-2 text-white rounded-md">
-                  <h3 className="ms-4">Basket Name</h3>
-                  <h3 className="me-4">Creation Date</h3>
+                  <h3 className="ms-4">{t("Basket Name")}</h3>
+                  <h3 className="me-4">{t("Creation Date")}</h3>
                 </div>
 
                 {Array.isArray(currentRowsRight) &&
@@ -270,7 +275,7 @@ export default function MainBaskets() {
       <section>
         <div className="w-[80%] mx-auto">
           <div className="mt-12 ms-4 border-t-1 w-[99%] text-[#00000030]">
-            <h1 className="font-bold text-xl pt-6 text-black">Activites</h1>
+            <h1 className="font-bold text-xl pt-6 text-black">{t("Activities")}</h1>
           </div>
 
           <div className="ms-4 mt-4">

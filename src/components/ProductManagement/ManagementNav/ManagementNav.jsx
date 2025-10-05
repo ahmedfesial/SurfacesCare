@@ -3,85 +3,55 @@ import background from "../../../assets/Photos/backgroundNavbar.jpg";
 import { LuBellRing } from "react-icons/lu";
 import { IoLanguageSharp } from "react-icons/io5";
 import { NotificationtContext } from "../../../Context/NotificationContext";
-import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../../../config";
-import axios from "axios";
 import FilterPanel from "../../Products/FilterPanel/FilterPanel";
 import ExportImport from "../../Products/ProductsNavbar/ExportImport";
 import PriceProduct from "./PriceProduct";
+import { useTranslation } from "react-i18next";
+import { createLanguageToggle, createNotificationActions } from "../../../utils/languageUtils";
 
 
 export default function ManagementNav({ onFilter }) {
 
   
-  let token = localStorage.getItem("userToken");
+      let { t, i18n } = useTranslation();
+      let token = localStorage.getItem("userToken");
+    
+      let { notifications, markAllRead, switchLanguage, hideNotificationCount } =
+        useContext(NotificationtContext);
+    
+      const [open, setOpen] = useState(false);
+    
+      // Create standardized language toggle and notification actions
+      const toggleLanguage = createLanguageToggle(i18n, switchLanguage);
+      const { ApprovedPrice, RejectPrice } = createNotificationActions( 
+        t,
+        token,
+        API_BASE_URL
+      );
+      createNotificationActions;
+    
+      // Open Menu
+      function toggleDropdown() {
+        setOpen((prev) => !prev);
+    
+        if (!open && notifications?.length > 0) {
+          markAllRead();
+          hideNotificationCount();
+        }
+      }
+    
+      //notifications unread count
+      const unreadCount = notifications?.filter((n) => n.status !== "read").length;
+      const isRTL = i18n.language === "ar";
 
-  // ⬅️ خدنا الدوال والـ data من الـ Context
-  let { notifications, markAllRead, switchLanguage, hideNotificationCount } =
-    useContext(NotificationtContext);
-
-
-  const [open, setOpen] = useState(false);
-
-  // Open Menu
-  function toggleDropdown() {
-    setOpen((prev) => !prev);
-
-    if (!open && notifications?.length > 0) {
-      markAllRead();
-      hideNotificationCount();
-    }
-  }
-
-  //Switch Language
-  const toggleLanguage = () => {
-    const currentLang = localStorage.getItem("lang") || "ar";
-    const newLang = currentLang === "ar" ? "en" : "ar";
-
-    switchLanguage(newLang);
-    localStorage.setItem("lang", newLang);
-
-    toast.success(`Language switched to ${newLang.toUpperCase()}`);
-  };
-
-  // Approved Change Price
-  function ApprovedPrice(client) {
-    axios
-      .post(
-        `${API_BASE_URL}clients/${client}/approve`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then(() => {
-        toast.success("Approved Price");
-      })
-      .catch(() => {
-        toast.error("Error Approved Price");
-      });
-  }
-
-  // Reject Change Price
-  function RejectPrice(client) {
-    axios
-      .post(
-        `${API_BASE_URL}clients/${client}/reject`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      .then(() => {
-        toast.success("Reject Price");
-      })
-      .catch(() => {
-        toast.error("Error Reject Price");
-      });
-}
-
-  //notifications unread count
-  const unreadCount = notifications?.filter((n) => n.status !== "read").length;
 
   return (
     <nav>
-      <div className="rounded-2xl fixed pt-2 right-2 left-72 bg-white z-50">
+      <div className={`
+          rounded-2xl fixed pt-2 bg-white z-50
+          ${isRTL ? "left-2 right-72" : "right-2 left-72"}
+        `}>
         <div
           className="bg-center bg-cover bg-repeat w-full h-[190px] rounded-2xl animate-backgroundMove"
           style={{ backgroundImage: `url(${background})` }}
@@ -90,9 +60,9 @@ export default function ManagementNav({ onFilter }) {
           <div className="flex justify-end items-center relative">
             {/* Switch language */}
             <IoLanguageSharp
-              onClick={toggleLanguage}
-              className="text-white text-xl mt-3 me-2 cursor-pointer"
-            />
+                          onClick={toggleLanguage}
+                          className="text-white text-xl mt-3 me-2 cursor-pointer"
+                        />
 
             {/* Notification */}
             <div className="relative mt-4 me-4">
@@ -108,7 +78,8 @@ export default function ManagementNav({ onFilter }) {
 
               {/* Dropdown notifications */}
               {open && (
-                <div className="absolute right-0 mt-3 w-72 bg-white shadow-lg rounded-lg overflow-hidden z-50 max-h-80 overflow-y-auto">
+                <div className={`absolute mt-3 w-72 bg-white shadow-lg rounded-lg overflow-hidden z-50 max-h-80 overflow-y-auto 
+                ${i18n.language === "ar" ? "left-0" : "right-0"}`}>
                   {notifications?.length > 0 ? (
                     notifications.map((notif) => (
                       <div key={notif.id}>
@@ -132,17 +103,17 @@ export default function ManagementNav({ onFilter }) {
                                 onClick={() =>
                                   ApprovedPrice(notif.related_entity_id)
                                 }
-                                className="w-full border rounded-md text-green-600 hover:bg-green-50 cursor-pointer"
+                                className="w-full border rounded-md text-green-600 hover:bg-green-50 cursor-pointer flex justify-center"
                               >
-                                Approve
+                                {t("actions.approve")}
                               </button>
                               <button
                                 onClick={() =>
                                   RejectPrice(notif.related_entity_id)
                                 }
-                                className="w-full border rounded-md text-red-600 hover:bg-red-50 cursor-pointer"
+                                className="w-full border rounded-md text-red-600 hover:bg-red-50 cursor-pointer flex justify-center"
                               >
-                                Reject
+                                {t("actions.reject")}
                               </button>
                             </div>
                           </div>
@@ -163,7 +134,7 @@ export default function ManagementNav({ onFilter }) {
           <div className="mt-2 w-[95%] mx-auto">
             <div className="flex justify-between items-center mx-6">
               <h1 className="text-4xl ms-8 text-white font-bold">
-                Product Management
+                {t("nav.Product")}
               </h1>
               <div className="flex items-center">
                 <ExportImport />

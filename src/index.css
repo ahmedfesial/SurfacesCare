@@ -15,6 +15,19 @@ body:lang(ar) {
 body:lang(en) {
   font-family: "Be Vietnam Pro", sans-serif;
 }
+/* النص العربي */
+:lang(ar) {
+  font-family: "Cairo", sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* النص الإنجليزي */
+:lang(en) {
+  font-family: "Be Vietnam Pro", sans-serif;
+  direction: ltr;
+  text-align: left;
+}
 
 .active{
     color: white;

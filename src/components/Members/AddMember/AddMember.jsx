@@ -10,10 +10,13 @@ import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 export default function AddMember() {
-  let token = localStorage.getItem("userToken"); // Token
 
+
+  let token = localStorage.getItem("userToken"); // Token
+  let {t} = useTranslation()
   let queryClient = useQueryClient(); // Query Client
 
   const [spinner, setSpinner] = useState(false); // spinner
@@ -66,7 +69,7 @@ export default function AddMember() {
     <Dialog.Root>
       {/*Button Add  */}
       <Dialog.Trigger className="bg-white me-6 mt-2 text-[#1243AF] px-8 py-1 rounded-md cursor-pointer flex items-center gap-2">
-        Add Member <FaPlus className="text-sm" />
+        {t("Member.Add Member")} <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -78,7 +81,7 @@ export default function AddMember() {
                 value="basic"
                 className="py-2 px-4 ms-4 text-lg font-bold border-b-2 "
               >
-                Add Member
+                {t("Member.Add Member")}
               </Tabs.Trigger>
             </Tabs.List>
 
@@ -91,7 +94,7 @@ export default function AddMember() {
                 >
                   {/*Members Name */}
                   <div className="flex flex-col gap-1">
-                    <label className="text-[#1243AF] font-light">Name</label>
+                    <label className="text-[#1243AF] font-light">{t("Name")}</label>
                     <input
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -105,7 +108,7 @@ export default function AddMember() {
 
                   {/*Member Email  */}
                   <div className="flex flex-col gap-1">
-                    <label className="text-[#1243AF] font-light">Email</label>
+                    <label className="text-[#1243AF] font-light">{t("Email")}</label>
                     <input
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -119,7 +122,7 @@ export default function AddMember() {
 
                   {/*Members Number */}
                   <div className="flex flex-col gap-1">
-                    <label className="text-[#1243AF] font-light">Number</label>
+                    <label className="text-[#1243AF] font-light">{t("Telephone")}</label>
                     <input
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -136,7 +139,7 @@ export default function AddMember() {
                     {/* Password */}
                     <div className="flex flex-col gap-1 w-full md:w-1/2">
                       <label className="text-[#1243AF] font-light">
-                        Password
+                        {t("Member.Password")}
                       </label>
                       <input
                         onChange={formik.handleChange}
@@ -151,7 +154,7 @@ export default function AddMember() {
 
                     {/*Image  */}
                     <div className="flex flex-col gap-1 w-full md:w-1/2">
-                      <p className="textColor ">Profile</p>
+                      <p className="textColor ">{t("Member.Profile")}</p>
                       <label
                         htmlFor="file-upload"
                         className="textColor border p-2 rounded-md flex items-center space-x-2 cursor-pointer hover:bg-[#1243AF]! hover:text-white! transition font-light"
@@ -179,7 +182,7 @@ export default function AddMember() {
                   {/*Role*/}
                   <div>
                     <h1 className="textColor text-sm mt-6 mb-4 font-bold">
-                      Role:
+                      {t("Member.Role")}:
                     </h1>
                     <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-8 textColor">
                       <div className="flex items-center">
@@ -197,7 +200,7 @@ export default function AddMember() {
                           htmlFor="superAdmin"
                           className="ms-2 text-sm font-medium"
                         >
-                          Super Admin
+                          {t("Member.Super Admin")}
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -215,7 +218,7 @@ export default function AddMember() {
                           htmlFor="admin"
                           className="ms-2 text-sm font-medium"
                         >
-                          Admin
+                          {t("Member.Admin")}
                         </label>
                       </div>
                       <div className="flex items-center">
@@ -233,7 +236,7 @@ export default function AddMember() {
                           htmlFor="user"
                           className="ms-2 text-sm font-medium"
                         >
-                          User
+                          {t("Member.User")}
                         </label>
                       </div>
                     </div>
@@ -247,7 +250,7 @@ export default function AddMember() {
                       {spinner ? (
                         <FaSpinner className="animate-spin text-2xl text-blue-500" />
                       ) : (
-                        "Save"
+                        t("Save")
                       )}
                     </button>
                   </div>
