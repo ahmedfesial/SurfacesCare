@@ -125,7 +125,7 @@ export default function CardsManagement({ filteredProducts }) {
                   <div className="w-full aspect-square overflow-hidden rounded-lg">
                     <img
                       className="w-full h-full object-cover"
-                      src={product.image_url || defultProductImage}
+                      src={product.main_image || defultProductImage}
                       alt="product image"
                     />
                   </div>

@@ -45,7 +45,8 @@ export default function AddBrands({ open, onOpenChange }) {
       .then(() => {
         toast.success("Create Brands");
         queryBrand.invalidateQueries(["AllBrands"]);
-      formik.resetForm();
+        formik.resetForm();
+        onOpenChange(false);
       })
       .catch((err) => {
         toast.error("Error Create Brands");

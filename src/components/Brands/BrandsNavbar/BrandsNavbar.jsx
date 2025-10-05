@@ -13,6 +13,7 @@ import {
 const SearchBar = React.lazy(() => import("../../SearchBar/SearchBar"));
 
 export default function BasketsNavbar() {
+
   
   let { t, i18n } = useTranslation();
   let token = localStorage.getItem("userToken");
@@ -140,7 +141,7 @@ export default function BasketsNavbar() {
               <h1 className="text-4xl text-white font-bold ms-6">
                 {t("nav.Brands")}
               </h1>
-              <AddBrands />
+              <AddBrands  open={open} onOpenChange={setOpen}/>
             </div>
             {/*Input Search  */}
             <SearchBar />

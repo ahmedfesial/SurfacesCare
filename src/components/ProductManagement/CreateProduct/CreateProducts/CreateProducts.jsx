@@ -114,7 +114,7 @@ export default function CreateProducts() {
     });
     
     axios
-      .post(`${API_BASE_URL}/products/create`, formData, {
+      .post(`http://127.0.0.1:8000/api/products/create`, formData, {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
