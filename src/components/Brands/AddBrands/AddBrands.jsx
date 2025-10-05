@@ -27,7 +27,7 @@ export default function AddBrands({ open, onOpenChange }) {
     const formData = new FormData();
     formData.append("logo", values.logo);
     formData.append("background_image_url", values.background_image_url);
-    formData.append("catalog_pdf_url", values.catalog_pdf_url);
+    // formData.append("catalog_pdf_url", values.catalog_pdf_url);
     formData.append("name_en", values.name_en);
     formData.append("name_ar", values.name_ar);
     formData.append("short_description_en", values.short_description_en);
@@ -56,7 +56,7 @@ export default function AddBrands({ open, onOpenChange }) {
     initialValues: {
       logo: "",
       background_image_url: "",
-      catalog_pdf_url: "",
+      // catalog_pdf_url: "",
       name_en: "",
       name_ar: "",
       short_description_en: "",
@@ -273,7 +273,7 @@ export default function AddBrands({ open, onOpenChange }) {
                     </div>
 
                     {/* Catalog PDF */}
-                    <div className="w-full md:w-1/2 flex flex-col gap-2">
+                    {/* <div className="w-full md:w-1/2 flex flex-col gap-2">
                       <p className="textColor text-sm">{t("Brand.Catalog")} PDF</p>
                       <label
                         htmlFor="Catalog-upload"
@@ -296,7 +296,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         }
                         className="hidden"
                       />
-                    </div>
+                    </div> */}
 
                     {/*Color*/}
                     <div className="flex flex-col w-full md:w-1/2 mt-6">
