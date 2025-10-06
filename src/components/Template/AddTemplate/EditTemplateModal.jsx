@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import axios from "axios";
 import { API_BASE_URL } from "./../../../../config";
+import {  FaSpinner } from "react-icons/fa";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -17,6 +18,8 @@ export default function EditTemplateModal({
 }) {
   let token = localStorage.getItem("userToken");
   let queryClient = useQueryClient();
+  const [isLoading, setisLoading] = useState(false);
+  
 
   // State for existing images
   const [existingImages, setExistingImages] = useState({
@@ -45,6 +48,7 @@ export default function EditTemplateModal({
 
   // Update Template
   async function updateTemplate(values) {
+    setisLoading(true)
     try {
       // Step 1: Update template basic info
       await axios.put(
@@ -100,9 +104,10 @@ export default function EditTemplateModal({
       queryClient.invalidateQueries(["AllTemplate"]);
       onUpdate && onUpdate();
       onClose();
-    } catch (err) {
-      console.error("Update Error 👉", err.response?.data || err.message);
-      toast.error("Error updating template ❌");
+      setisLoading(false)
+    } catch {
+      toast.error("Error updating template");
+      setisLoading(false)
     }
   }
 
@@ -473,7 +478,7 @@ export default function EditTemplateModal({
                 type="submit"
                 className="px-6 bg-white text-[#1243AF] rounded-md p-2 cursor-pointer hover:bg-[#1243AF] hover:text-white border duration-300 transition-all"
               >
-                {t("Template.Update Template")}
+                {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Template.Update Template")}
               </button>
             </div>
           </form>

@@ -3,7 +3,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import axios from "axios";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { API_BASE_URL } from "../../../../config";
-import { FaPalette } from "react-icons/fa";
+import { FaPalette, FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,17 +13,19 @@ import AddMainCategory from "./AddMainCategory";
 import AddSubCategoroy from "./AddSubCategoroy";
 import { useTranslation } from "react-i18next";
 
-export default function AddBrands({ open, onOpenChange }) {
 
-  let {t} = useTranslation();
+export default function AddBrands({ open, onOpenChange }) {
+  let { t } = useTranslation();
   const token = localStorage.getItem("userToken");
   const queryBrand = useQueryClient();
   const [tabValue, setTabValue] = useState("basic");
+  const [isLoading, setisLoading] = useState(false);
 
   // Get All Brands
 
   // Add Brnds
   function AddBrand(values) {
+    setisLoading(true);
     const formData = new FormData();
     formData.append("logo", values.logo);
     formData.append("background_image_url", values.background_image_url);
@@ -47,11 +49,11 @@ export default function AddBrands({ open, onOpenChange }) {
         queryBrand.invalidateQueries(["AllBrands"]);
         formik.resetForm();
         onOpenChange(false);
+        setisLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Error Create Brands");
-        console.log(err);
-        
+        setisLoading(false);
       });
   }
 
@@ -74,7 +76,7 @@ export default function AddBrands({ open, onOpenChange }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger className="bg-white flex items-center gap-2 mt-2 text-[#1243AF] px-8 py-1 rounded-md cursor-pointer hover:bg-gray-300 duration-300 transition-all me-6">
-        {t("Brand.Add")}  <FaPlus className="text-sm" />
+        {t("Brand.Add")} <FaPlus className="text-sm" />
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -191,6 +193,7 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="For Example , Surfaces care company...."
                       />
                     </div>
+
                     <div className="flex flex-col w-full md:w-1/2 text-left md:text-right">
                       <label htmlFor="short_description_ar" className="text-sm">
                         الوصف المختصر عربى
@@ -207,10 +210,9 @@ export default function AddBrands({ open, onOpenChange }) {
                       />
                     </div>
                   </div>
-
-                  {/* Long Descriptions */}
+                  {/*Long Desc EN & AR  */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
-
+                    {/* Long Descriptions */}
                     <div className="flex flex-col w-full">
                       <label htmlFor="full_description_en">
                         Long Description EN
@@ -226,30 +228,32 @@ export default function AddBrands({ open, onOpenChange }) {
                         placeholder="For Example , Surfaces care company...."
                       />
                     </div>
+
+                    {/*DESC AR  */}
                     <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
                       <div className="flex flex-col w-full mt-1">
-
-                      <label htmlFor="full_description_ar" className="text-sm">
-                        الوصف عربى
-                      </label>
-                      <textarea
-                        id="full_description_ar"
-                        name="full_description_ar"
-                        value={formik.values.full_description_ar}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        rows={5}
-                        className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
-                        placeholder="الوصف المختصر عربى"
+                        <label
+                          htmlFor="full_description_ar"
+                          className="text-sm"
+                        >
+                          الوصف عربى
+                        </label>
+                        <textarea
+                          id="full_description_ar"
+                          name="full_description_ar"
+                          value={formik.values.full_description_ar}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          rows={5}
+                          className="border my-1 text-sm ps-2 pt-1 rounded-md w-full"
+                          placeholder="الوصف المختصر عربى"
                         />
                       </div>
                     </div>
-
                   </div>
 
-                  {/* Cover + Color */}
+                  {/* Cover & Catalog PDF & Color */}
                   <div className="w-full flex flex-col md:flex-row gap-4 items-center text-[#1243AF]">
-
                     {/* Cover */}
                     <div className="w-full md:w-1/2 flex flex-col gap-2">
                       <p className="textColor text-sm">{t("Brand.Cover")}</p>
@@ -305,45 +309,46 @@ export default function AddBrands({ open, onOpenChange }) {
                     {/*Color*/}
                     <div className="flex flex-col w-full md:w-1/2 mt-6">
                       <div>
-      {/* نخفي الـ input */}
-      <input
-        id="color_code"
-        name="color_code"
-        type="color"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.color_code}
-        className="hidden"
-      />
+                        {/* نخفي الـ input */}
+                        <input
+                          id="color_code"
+                          name="color_code"
+                          type="color"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.color_code}
+                          className="hidden"
+                        />
 
-      {/* الزرار المخصص */}
-      <label
-        htmlFor="color_code"
-        className="cursor-pointer border w-full h-12 my-1 rounded-md flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
-      >
-        <div className="flex items-center gap-2">
-          <FaPalette className="text-lg" />
-          <span className=" font-medium">{t("Brand.Choose Color")}</span>
-        </div>
+                        {/* الزرار المخصص */}
+                        <label
+                          htmlFor="color_code"
+                          className="cursor-pointer border w-full h-12 my-1 rounded-md flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
+                        >
+                          <div className="flex items-center gap-2">
+                            <FaPalette className="text-lg" />
+                            <span className=" font-medium">
+                              {t("Brand.Choose Color")}
+                            </span>
+                          </div>
 
-        <div className="flex items-center gap-3">
-          {/* كود HEX */}
-          <span className="text-sm font-mono">
-            {formik.values.color_code}
-          </span>
-          {/* اللون المختار */}
-          <span
-            className="w-6 h-6 rounded-full border"
-            style={{ backgroundColor: formik.values.color_code }}
-          ></span>
-        </div>
-      </label>
-    </div>
+                          <div className="flex items-center gap-3">
+                            {/* كود HEX */}
+                            <span className="text-sm font-mono">
+                              {formik.values.color_code}
+                            </span>
+                            {/* اللون المختار */}
+                            <span
+                              className="w-6 h-6 rounded-full border"
+                              style={{
+                                backgroundColor: formik.values.color_code,
+                              }}
+                            ></span>
+                          </div>
+                        </label>
+                      </div>
                     </div>
-
                   </div>
-
-
                 </div>
                 {/* Add Brand Button */}
                 <div className="flex justify-end mt-6 gap-4">
@@ -351,7 +356,7 @@ export default function AddBrands({ open, onOpenChange }) {
                     className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
                     type="submit"
                   >
-                    {t("Save")}
+                    {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Save")}
                   </button>
                 </div>
               </form>
@@ -364,7 +369,7 @@ export default function AddBrands({ open, onOpenChange }) {
 
             {/* Sub-Categories */}
             <Tabs.Content value="SubCategory" className="p-4 md:p-6">
-              <AddSubCategoroy /> 
+              <AddSubCategoroy />
             </Tabs.Content>
           </Tabs.Root>
         </Dialog.Content>

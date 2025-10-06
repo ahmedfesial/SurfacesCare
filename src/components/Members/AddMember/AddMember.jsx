@@ -12,7 +12,7 @@ import { MdOutlineFileUpload } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 
-export default function AddMember() {
+export default function AddMember({ open , onOpenChange}) {
 
 
   let token = localStorage.getItem("userToken"); // Token
@@ -58,6 +58,7 @@ export default function AddMember() {
         toast.success("Member added successfully");
         queryClient.invalidateQueries(["AllMembers"]);
         setSpinner(false);
+        onOpenChange(false)
       })
       .catch(() => {
         toast.error("Failed to add member");
@@ -66,7 +67,7 @@ export default function AddMember() {
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {/*Button Add  */}
       <Dialog.Trigger className="bg-white me-6 mt-2 text-[#1243AF] px-8 py-1 rounded-md cursor-pointer flex items-center gap-2">
         {t("Member.Add Member")} <FaPlus className="text-sm" />

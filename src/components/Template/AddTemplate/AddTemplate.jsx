@@ -2,21 +2,26 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import axios from "axios";
 import { API_BASE_URL } from "./../../../../config";
+import {  FaSpinner } from "react-icons/fa";
 import { useFormik } from "formik";
 import { FaPlus } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
-export default function AddTemplate() {
+export default function AddTemplate({open , onOpenChange}) {
 
 
   let token = localStorage.getItem("userToken");
   let queryClient = useQueryClient();
+  const [isLoading, setisLoading] = useState(false);
+  
   let {t} = useTranslation();
 
   // Create Template
   async function createTemplate(values) {
+    setisLoading(true)
     try {
       // Step 1: create template
       const { data } = await axios.post(
@@ -66,9 +71,11 @@ export default function AddTemplate() {
 
       toast.success("Template created successfully ✅");
       queryClient.invalidateQueries(["AllTemplates"]);
-    } catch (err) {
-      console.error("Main Error 👉", err.response?.data || err.message);
-      toast.error("Error creating template ❌");
+      onOpenChange(false)
+      setisLoading(false)
+    } catch {
+      toast.error("Error creating template ");
+      setisLoading(false)
     }
   }
 
@@ -85,7 +92,7 @@ export default function AddTemplate() {
   });
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {/*Button Add*/}
       <Dialog.Trigger className="bg-white flex items-center gap-2 text-[#1243AF] px-8 py-1 rounded-md mt-2 cursor-pointer hover:bg-gray-300 duration-300 transition-all z-40">
         {t("Template.Add Template")} <FaPlus className="text-sm" />
@@ -276,7 +283,7 @@ export default function AddTemplate() {
                 type="submit"
                 className="px-6 bg-white text-[#1243AF] rounded-md p-2 cursor-pointer hover:bg-[#1243AF] hover:text-white border duration-300 transition-all"
               >
-                {t("Save")}
+                {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Save")}
               </button>
             </div>
           </form>

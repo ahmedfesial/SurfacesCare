@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo , useRef, useState } from "react";
 import { LuUpload } from "react-icons/lu";
-import { FaBarcode } from "react-icons/fa";
+import { FaBarcode  , FaSpinner} from "react-icons/fa";
 import { FiEdit2 } from "react-icons/fi";
 import { HiOutlineSquaresPlus } from "react-icons/hi2";
 import { FaBox } from "react-icons/fa";
@@ -33,6 +33,8 @@ export default function CreateProducts() {
   const [legend, setLegend] = useState([null, null, null]);
   const [mainColorsPreview, setMainColorsPreview] = useState([]);
   const mainColorsInputRef = useRef(null);
+  const [isLoading, setisLoading] = useState(false);
+  
 
   //Filter
   const [selectedMainCategory, setSelectedMainCategory] = useState(null);
@@ -91,7 +93,7 @@ export default function CreateProducts() {
   // Create Product
   function AddProduct(values) {
     const formData = new FormData();
-
+    setisLoading(true)
     Object.entries(values).forEach(([key, val]) => {
       if (val instanceof File) {
         formData.append(key, val);
@@ -123,13 +125,11 @@ export default function CreateProducts() {
       .then((res) => {
         toast.success(res.data.message);
         navigate('/ProductManagement')
-        console.log(res);
-        
+        setisLoading(false)
       })
       .catch((err) => {
         toast.error(err.response.data.message);
-        console.log(err);
-        
+        setisLoading(false)
       });
   }
 
@@ -571,7 +571,7 @@ export default function CreateProducts() {
                 type="submit"
                 className="backGroundColor text-xl text-white w-[70%] mt-20 px-4 py-1 mb-8 rounded-lg cursor-pointer hover:scale-95"
               >
-                Create Product
+                {isLoading ? (<FaSpinner className="animate-spin text-2xl flex justify-center w-full" />) : "Create Product"}
               </button>
             </div>
 

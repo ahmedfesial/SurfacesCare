@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { FaPalette } from "react-icons/fa";
+import { FaPalette , FaSpinner } from "react-icons/fa";
 import { API_BASE_URL } from "../../../../config";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,7 @@ export default function AddMainCategoryMulti() {
   const { t } = useTranslation();
   const token = localStorage.getItem("userToken");
   const queryClient = useQueryClient();
+  
 
   // ✅ Get All Brands safely
   const getAllBrand = () => axios.get(`${API_BASE_URL}brands`);
@@ -48,18 +49,16 @@ export default function AddMainCategoryMulti() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!selectedBrand) {
       toast.error(t("Select Brand") || "اختر ماركة أولاً");
       return;
     }
-
+    
     setLoading(true);
-
+    
     try {
       const formData = new FormData();
 
-      // ✅ نكوّن الـ structure الصحيح
       categories.forEach((cat, idx) => {
         formData.append(`categories[${idx}][brand_id]`, selectedBrand);
         formData.append(`categories[${idx}][name_en]`, cat.name_en);
@@ -73,16 +72,14 @@ export default function AddMainCategoryMulti() {
       await axios.post(`${API_BASE_URL}main-categories/create`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       toast.success(t("Created successfully") || "تم إنشاء الفئات بنجاح");
       queryClient.invalidateQueries(["main-categories"]);
       setCategories([emptyCategory()]);
     } catch (err) {
-      console.error(err);
       toast.error(
         err.response?.data?.message ||
-          t("Error occurred") ||
-          "حدث خطأ أثناء الحفظ"
+        t("Error occurred") ||
+        "حدث خطأ أثناء الحفظ"
       );
     } finally {
       setLoading(false);
@@ -213,7 +210,7 @@ export default function AddMainCategoryMulti() {
             onClick={addCategory}
             className="px-4 py-2 bg-gray-100 border rounded hover:shadow textColor cursor-pointer"
           >
-            {t("Add") || "Add"}
+            {t("Add")}
           </button>
 
           <button

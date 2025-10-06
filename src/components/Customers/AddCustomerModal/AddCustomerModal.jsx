@@ -1,8 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
-import * as Switch from "@radix-ui/react-switch";
 import FolderCreator from "../FolderCreator/FolderCreator";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { FaSpinner } from "react-icons/fa";
 import axios from "axios";
 import { API_BASE_URL } from "../../../../config";
 import { useFormik } from "formik";
@@ -15,8 +15,8 @@ import { useTranslation } from "react-i18next";
 export default function AddCustomerModal() {
 
   let {t} = useTranslation()
-
   let token = localStorage.getItem("userToken");
+  const [isLoading, setisLoading] = useState(false);
   let queryClient = useQueryClient();
 
   // Open & Close Dialog
@@ -51,6 +51,7 @@ export default function AddCustomerModal() {
 
   // Add Customer
   function AddCustomer(formValue) {
+    setisLoading(true)
     const formData = new FormData();
 
     formData.append("name", formValue.name);
@@ -72,11 +73,13 @@ export default function AddCustomerModal() {
           toast.success("Customer added successfully");
           formik.resetForm();
           queryClient.invalidateQueries(["AllCustomers"]);
+          setisLoading(false)
+          setOpen(false)
         }
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Failed to add customer");
-        console.log(err);
+        setisLoading(false)
       });
   }
 
@@ -204,7 +207,7 @@ export default function AddCustomerModal() {
                     onClick={() => handleAddCustomer}
                     className="px-8 backGroundColor text-white rounded-md p-2 cursor-pointer hover:bg-white! hover:text-[#1243AF] border duration-300 transition-all"
                   >
-                    {t("Save")}
+                    {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Basket.Add Basket")}
                   </button>
                 </div>
               </form>

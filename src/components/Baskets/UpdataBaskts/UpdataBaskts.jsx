@@ -1,24 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import axios from 'axios';
+import { FaSpinner } from "react-icons/fa";
 import { API_BASE_URL } from '../../../../config';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
-import { useFormik } from 'formik';
+import { Form, useFormik } from 'formik';
 import { t } from 'i18next';
 
 
 
-export default function UpdataBaskts({updateBaskets , setUpdateBaskets , BasketsId}) {
+export default function UpdataBaskts({updateBaskets , setUpdateBaskets , BasketsId  }) {
 
   let token = localStorage.getItem("userToken");
   let queryBaskets = useQueryClient(); 
+  const [isLoading, setisLoading] = useState(false);
 
   //Update Baskets
   function updateBasket(value){
-
-
+    setisLoading(true)
     axios.put(`${API_BASE_URL}baskets/update/${BasketsId}` , value,{
         headers: {
         Authorization: `Bearer ${token}`,
@@ -27,9 +28,11 @@ export default function UpdataBaskts({updateBaskets , setUpdateBaskets , Baskets
     .then(()=>{
         toast.success("Update Basket Name")
         queryBaskets.invalidateQueries(['AllBaskets'])
-    })
-    .catch(()=>{
+        setisLoading(false)
+      })
+      .catch(()=>{
         toast.error('error update Baskets Name')
+        setisLoading(false)
     })
   }
 
@@ -86,7 +89,7 @@ export default function UpdataBaskts({updateBaskets , setUpdateBaskets , Baskets
                 type="submit"
                 className=" me-14 px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
               >
-                {t("Save")}
+                {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Save")}
               </button>
             </div>
             </form>

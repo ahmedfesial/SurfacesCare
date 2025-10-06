@@ -5,13 +5,15 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { API_BASE_URL } from "../../../../config";
 import axios from "axios";
 import { useFormik } from "formik";
+import { FaSpinner } from "react-icons/fa";
 import { MdOutlineFileUpload } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CiFolderOn } from "react-icons/ci";
-const CompanyFolder = React.lazy(() => import("./CompanyFolder"));
 import { BiEditAlt } from "react-icons/bi";
 import { t } from "i18next";
+const CompanyFolder = React.lazy(() => import("./CompanyFolder"));
+
 
 export default function UpdateClientDialog({
   updateClient,
@@ -21,11 +23,12 @@ export default function UpdateClientDialog({
   const token = localStorage.getItem("userToken");
   const queryClient = useQueryClient();
   const queryFolder = useQueryClient();
-
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [showEditFolderCard, setShowEditFolderCard] = useState(false);
   const [folderNameInput, setFolderNameInput] = useState("");
   const inputRef = useRef(null);
+  const [isLoading, setisLoading] = useState(false);
+
 
   // تحديث اسم فولدر
   function handleFolderNameUpdate(e) {
@@ -74,6 +77,7 @@ export default function UpdateClientDialog({
 
   // Update Client
   function updateCustomer(values) {
+    setisLoading(true)
     const formData = new FormData();
     formData.append("company", values.company);
     formData.append("default_price_type", values.default_price_type || "");
@@ -89,11 +93,11 @@ export default function UpdateClientDialog({
         toast.success("Client updated successfully");
         queryClient.invalidateQueries(["AllCustomers"]);
         setUpdateClient(false);
-        console.log(res);
-        
+        setisLoading(false)
       })
       .catch((error) => {
         toast.error("Failed to update client");
+        setisLoading(false)
       });
   }
 
@@ -385,7 +389,7 @@ export default function UpdateClientDialog({
                       type="submit"
                       className="px-8 text-[#1243AF] rounded-xl p-2 border cursor-pointer hover:text-white hover:bg-[#1243AF] duration-300"
                     >
-                      {t("Update")}
+                      {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Update")}
                     </button>
                     <button
                       type="button"

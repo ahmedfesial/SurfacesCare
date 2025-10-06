@@ -2,17 +2,21 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import axios from "axios";
 import { API_BASE_URL } from "./../../../../config";
+import { FaSpinner } from "react-icons/fa";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaPlus } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
-export default function AddBasket() {
+export default function AddBasket({open , onOpenChange}) {
 
   let {t} = useTranslation();
   let token = localStorage.getItem("userToken");
   let queryClient = useQueryClient(); //Update UI
+  const [isLoading, setisLoading] = useState(false);
+  
 
   function getAllClient() {
     return axios.get(`${API_BASE_URL}clients`, {
@@ -30,6 +34,7 @@ export default function AddBasket() {
 
   // Add Basket
   function addBasket(formvalue) {
+    setisLoading(true)
     axios
       .post(`${API_BASE_URL}baskets/create`, formvalue, {
         headers: {
@@ -39,9 +44,12 @@ export default function AddBasket() {
       .then(() => {
         toast.success("Basket Added Successfully");
         queryClient.invalidateQueries(["AllBaskets"]);
+        onOpenChange(false)
+        setisLoading(false)
       })
       .catch(() => {
         toast.error("Something went wrong while adding the basket");
+        setisLoading(false)
       });
   }
 
@@ -56,7 +64,7 @@ export default function AddBasket() {
   });
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {/*Button Add  */}
       <Dialog.Trigger className="bg-white flex items-center gap-2 text-[#1243AF] px-4 sm:px-8 py-1 rounded-md mt-2 cursor-pointer hover:bg-gray-300 duration-300 transition-all me-6 z-40">
         {t("Basket.Add Basket")} <FaPlus className="text-sm" />
@@ -121,7 +129,7 @@ export default function AddBasket() {
                 type="submit"
                 className="px-8 bg-[#1243AF] text-white rounded-md p-2 cursor-pointer hover:bg-white hover:text-[#1243AF] border duration-300 transition-all"
               >
-                {t("Basket.Add Basket")}
+                {isLoading ? (<FaSpinner className="animate-spin text-2xl" />) : t("Basket.Add Basket")}
               </button>
             </div>
           </form>

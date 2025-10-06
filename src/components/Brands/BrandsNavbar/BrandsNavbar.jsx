@@ -22,6 +22,7 @@ export default function BasketsNavbar() {
     useContext(NotificationtContext);
 
   const [open, setOpen] = useState(false);
+  const [card, setCard] = useState(false);
 
   // Create standardized language toggle and notification actions
   const toggleLanguage = createLanguageToggle(i18n, switchLanguage);
@@ -141,7 +142,7 @@ export default function BasketsNavbar() {
               <h1 className="text-4xl text-white font-bold ms-6">
                 {t("nav.Brands")}
               </h1>
-              <AddBrands  open={open} onOpenChange={setOpen}/>
+              <AddBrands  open={card} onOpenChange={setCard}/>
             </div>
             {/*Input Search  */}
             <SearchBar />
