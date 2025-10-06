@@ -12,17 +12,11 @@ export default function AddMainCategoryMulti() {
   const queryClient = useQueryClient();
 
   // ✅ Get All Brands safely
-  const getAllBrands = async () => {
-    const res = await axios.get(`${API_BASE_URL}brands`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    // احتمال الـ API يرجع بيانات داخل data.data أو data مباشرة
-    return res.data?.data || res.data || [];
-  };
-
-  const { data: brands = [] } = useQuery({
-    queryKey: ["AllBrands"],
-    queryFn: getAllBrands,
+  const getAllBrand = () => axios.get(`${API_BASE_URL}brands`);
+  const { data: brands } = useQuery({
+    queryKey: ["AllMainCategory"],
+    queryFn: getAllBrand,
+    select: (res) => res.data.data,
   });
 
   const emptyCategory = () => ({

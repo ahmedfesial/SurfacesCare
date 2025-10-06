@@ -158,7 +158,7 @@ export default function AddSubCategoryMulti() {
               </div>
 
               {/* الصور */}
-              <div className="flex flex-col md:flex-row gap-4 mt-3">
+              <div className="flex flex-col md:flex-row gap-4 mt-3 textColor">
                 <div className="flex flex-col w-full">
                   <label>Cover Image</label>
                   <input
