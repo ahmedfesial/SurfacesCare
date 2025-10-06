@@ -18,11 +18,13 @@ export default function AddSubCategoryMulti() {
     select: (res) => res.data.data,
   });
 
-  // الفورمات الديناميكية
+  // الفورم الديناميكية
   const emptySubCategory = () => ({
     id: Date.now() + Math.random(),
     name_en: "",
     name_ar: "",
+    cover_image: null,
+    background_image: null,
   });
 
   const [selectedMain, setSelectedMain] = useState("");
@@ -41,15 +43,16 @@ export default function AddSubCategoryMulti() {
 
   // غيّر بيانات فورم معين
   const handleFieldChange = (idx, e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
     setSubCategories((prev) => {
       const copy = [...prev];
-      copy[idx][name] = value;
+      if (files) copy[idx][name] = files[0];
+      else copy[idx][name] = value;
       return copy;
     });
   };
 
-  // ارسال البيانات
+  // إرسال البيانات
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedMain) {
@@ -58,36 +61,30 @@ export default function AddSubCategoryMulti() {
     }
     setLoading(true);
 
-    const promises = subCategories.map((sub) => {
-      return axios.post(
-        `${API_BASE_URL}sub-categories/create`,
-        {
-          main_category_id: selectedMain,
-          name_en: sub.name_en,
-          name_ar: sub.name_ar,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+    const formData = new FormData();
+
+    subCategories.forEach((sub, index) => {
+      formData.append(`subcategories[${index}][main_category_id]`, selectedMain);
+      formData.append(`subcategories[${index}][name_en]`, sub.name_en);
+      formData.append(`subcategories[${index}][name_ar]`, sub.name_ar);
+      if (sub.cover_image) formData.append(`subcategories[${index}][cover_image]`, sub.cover_image);
+      if (sub.background_image) formData.append(`subcategories[${index}][background_image]`, sub.background_image);
     });
 
     try {
-      const results = await Promise.allSettled(promises);
-      const successCount = results.filter((r) => r.status === "fulfilled").length;
-      const failCount = results.length - successCount;
+      await axios.post(`${API_BASE_URL}sub-categories/create`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      if (successCount > 0) {
-        toast.success(`${successCount} SubCategories Created`);
-        queryClient.invalidateQueries(["AllSubCategory"]);
-      }
-      if (failCount > 0) toast.error(`${failCount} Failed`);
-
-      // Reset بعد الحفظ
+      toast.success("Subcategories Created Successfully");
+      queryClient.invalidateQueries(["AllSubCategory"]);
       setSubCategories([emptySubCategory()]);
     } catch (err) {
       console.log(err);
-      toast.error("Error Creating SubCategories");
+      toast.error("Error Creating Subcategories");
     } finally {
       setLoading(false);
     }
@@ -104,21 +101,19 @@ export default function AddSubCategoryMulti() {
             className="w-full rounded-md p-2 border textColor"
           >
             <option value="">{t("Brand.Select Main-Category")}</option>
-            {mainCategories?.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name_en}
-              </option>
-            ))}
+            {Array.isArray(mainCategories) &&
+              mainCategories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name_en}
+                </option>
+              ))}
           </select>
         </div>
 
         {/* كل SubCategory فورم */}
         <div className="space-y-4">
           {subCategories.map((sub, idx) => (
-            <div
-              key={sub.id}
-              className=" rounded-md p-4 shadow-lg relative bg-white"
-            >
+            <div key={sub.id} className="rounded-md p-4 shadow-lg relative bg-white">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-bold textColor">
                   {t("Sub-Category")} {idx + 1}
@@ -146,9 +141,10 @@ export default function AddSubCategoryMulti() {
                     placeholder="Name EN"
                   />
                 </div>
+
                 <div className="flex flex-col w-full text-left md:text-right mt-1">
                   <label className="text-sm" htmlFor={`name_ar_${sub.id}`}>
-                    الاسم عربى
+                    الاسم عربي
                   </label>
                   <input
                     id={`name_ar_${sub.id}`}
@@ -156,7 +152,31 @@ export default function AddSubCategoryMulti() {
                     value={sub.name_ar}
                     onChange={(e) => handleFieldChange(idx, e)}
                     className="border my-1 p-1.5 rounded-md text-right w-full"
-                    placeholder="الاسم عربى"
+                    placeholder="الاسم عربي"
+                  />
+                </div>
+              </div>
+
+              {/* الصور */}
+              <div className="flex flex-col md:flex-row gap-4 mt-3">
+                <div className="flex flex-col w-full">
+                  <label>Cover Image</label>
+                  <input
+                    type="file"
+                    name="cover_image"
+                    accept="image/*"
+                    onChange={(e) => handleFieldChange(idx, e)}
+                    className="border my-1 p-1.5 rounded-md w-full"
+                  />
+                </div>
+                <div className="flex flex-col w-full">
+                  <label>Background Image</label>
+                  <input
+                    type="file"
+                    name="background_image"
+                    accept="image/*"
+                    onChange={(e) => handleFieldChange(idx, e)}
+                    className="border my-1 p-1.5 rounded-md w-full"
                   />
                 </div>
               </div>

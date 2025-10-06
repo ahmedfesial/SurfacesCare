@@ -11,22 +11,24 @@ export default function AddMainCategoryMulti() {
   const token = localStorage.getItem("userToken");
   const queryClient = useQueryClient();
 
-  // Get All Brands (كما في كودك)
-  function getAllBrands() {
-    return axios.get(`${API_BASE_URL}brands`);
-  }
-  const { data: brands } = useQuery({
+  // ✅ Get All Brands safely
+  const getAllBrands = async () => {
+    const res = await axios.get(`${API_BASE_URL}brands`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // احتمال الـ API يرجع بيانات داخل data.data أو data مباشرة
+    return res.data?.data || res.data || [];
+  };
+
+  const { data: brands = [] } = useQuery({
     queryKey: ["AllBrands"],
     queryFn: getAllBrands,
-    select: (res) => res.data.data,
   });
 
-  // كل كاتيجوري عنصر في المصفوفة
   const emptyCategory = () => ({
-    id: Date.now() + Math.random(), // لعمل key فريد ولإعادة تهيئة input type=file
     name_en: "",
     name_ar: "",
-    color_code: "#ffffff",
+    color_code: "#000000",
     image_url: null,
   });
 
@@ -34,9 +36,7 @@ export default function AddMainCategoryMulti() {
   const [categories, setCategories] = useState([emptyCategory()]);
   const [loading, setLoading] = useState(false);
 
-  const addCategory = () => {
-    setCategories((prev) => [...prev, emptyCategory()]);
-  };
+  const addCategory = () => setCategories((prev) => [...prev, emptyCategory()]);
 
   const removeCategory = (idx) => {
     setCategories((prev) => prev.filter((_, i) => i !== idx));
@@ -54,50 +54,42 @@ export default function AddMainCategoryMulti() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!selectedBrand) {
-      toast.error(t("Brand.Select Brand") || "اختر ماركة أولاً");
+      toast.error(t("Select Brand") || "اختر ماركة أولاً");
       return;
     }
+
     setLoading(true);
 
-    // ارسال كل عنصر (يمكن تغييره إلى طلبات متسلسلة إذا أردت)
-    const promises = categories.map((cat) => {
+    try {
       const formData = new FormData();
-      formData.append("brand_id", selectedBrand);
-      formData.append("name_en", cat.name_en);
-      formData.append("name_ar", cat.name_ar);
-      formData.append("color_code", cat.color_code || "");
-      if (cat.image_url) formData.append("image_url", cat.image_url);
 
-      return axios.post(`${API_BASE_URL}main-categories/create`, formData, {
+      // ✅ نكوّن الـ structure الصحيح
+      categories.forEach((cat, idx) => {
+        formData.append(`categories[${idx}][brand_id]`, selectedBrand);
+        formData.append(`categories[${idx}][name_en]`, cat.name_en);
+        formData.append(`categories[${idx}][name_ar]`, cat.name_ar);
+        formData.append(`categories[${idx}][color_code]`, cat.color_code);
+        if (cat.image_url) {
+          formData.append(`categories[${idx}][image_url]`, cat.image_url);
+        }
+      });
+
+      await axios.post(`${API_BASE_URL}main-categories/create`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-    });
 
-    try {
-      const results = await Promise.allSettled(promises);
-      const successCount = results.filter((r) => r.status === "fulfilled")
-        .length;
-      const failCount = results.length - successCount;
-
-      if (successCount > 0) {
-        toast.success(
-          `${successCount} ${t("Brand.Created") || "تم إنشاء الفئات بنجاح"}`
-        );
-        queryClient.invalidateQueries(["main-categories"]);
-      }
-      if (failCount > 0) {
-        toast.error(
-          `${failCount} ${t("Brand.Failed") || "فشل في بعض الإضافات"}`
-        );
-        console.error("Some requests failed:", results);
-      }
-
-      // اترك خيار إعادة التهيئة كما تريد — هنا نعيد سطر واحد فارغ
+      toast.success(t("Created successfully") || "تم إنشاء الفئات بنجاح");
+      queryClient.invalidateQueries(["main-categories"]);
       setCategories([emptyCategory()]);
     } catch (err) {
       console.error(err);
-      toast.error(t("Brand.Error") || "حدث خطأ أثناء الحفظ");
+      toast.error(
+        err.response?.data?.message ||
+          t("Error occurred") ||
+          "حدث خطأ أثناء الحفظ"
+      );
     } finally {
       setLoading(false);
     }
@@ -106,32 +98,33 @@ export default function AddMainCategoryMulti() {
   return (
     <div className="w-[99%] mx-auto">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Top-level Brand selector */}
+        {/* Brand selector */}
         <div>
           <select
             value={selectedBrand}
             onChange={(e) => setSelectedBrand(e.target.value)}
             className="w-full rounded-md p-2 border textColor"
           >
-            <option value="">{t("Brand.Select Brand") || "اختر ماركة"}</option>
-            {brands?.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name_en}
-              </option>
-            ))}
+            <option value="">{t("Select Brand") || "اختر ماركة"}</option>
+            {Array.isArray(brands) &&
+              brands.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name_en}
+                </option>
+              ))}
           </select>
         </div>
 
-        {/* Dynamic categories list */}
+        {/* Categories */}
         <div className="space-y-4">
           {categories.map((cat, idx) => (
             <div
-              key={cat.id}
+              key={idx}
               className="rounded-md p-4 textColor shadow-lg relative"
             >
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-extrabold">
-                  {t("Brand Main Category") || "Main Category"} {idx + 1}
+                  {t("Main Category") || "Main Category"} {idx + 1}
                 </h4>
                 {categories.length > 1 && (
                   <button
@@ -146,9 +139,9 @@ export default function AddMainCategoryMulti() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
-                  <label htmlFor={`name_en_${cat.id}`}>Name EN</label>
+                  <label htmlFor={`name_en_${idx}`}>Name EN</label>
                   <input
-                    id={`name_en_${cat.id}`}
+                    id={`name_en_${idx}`}
                     name="name_en"
                     value={cat.name_en}
                     onChange={(e) => handleFieldChange(idx, e)}
@@ -158,9 +151,9 @@ export default function AddMainCategoryMulti() {
                 </div>
 
                 <div className="flex flex-col text-right">
-                  <label htmlFor={`name_ar_${cat.id}`}>الاسم عربى</label>
+                  <label htmlFor={`name_ar_${idx}`}>الاسم عربى</label>
                   <input
-                    id={`name_ar_${cat.id}`}
+                    id={`name_ar_${idx}`}
                     name="name_ar"
                     value={cat.name_ar}
                     onChange={(e) => handleFieldChange(idx, e)}
@@ -170,12 +163,12 @@ export default function AddMainCategoryMulti() {
                 </div>
 
                 <div className="flex flex-col">
-                  <label htmlFor={`image_url_${cat.id}`}>
-                    {t("Brand.Cover") || "Cover"}
+                  <label htmlFor={`image_url_${idx}`}>
+                    {t("Cover") || "Cover"}
                   </label>
                   <input
-                    key={`file-${cat.id}`} // تساعد على إعادة تهيئة الحقل عند إعادة الضبط
-                    id={`image_url_${cat.id}`}
+                    key={`file-${idx}`}
+                    id={`image_url_${idx}`}
                     name="image_url"
                     type="file"
                     onChange={(e) => handleFieldChange(idx, e)}
@@ -184,29 +177,29 @@ export default function AddMainCategoryMulti() {
                 </div>
 
                 <div className="flex flex-col">
-                  {/* hidden color input + custom label */}
                   <input
-                    id={`color_code_${cat.id}`}
+                    id={`color_code_${idx}`}
                     name="color_code"
                     type="color"
                     value={cat.color_code}
                     onChange={(e) => handleFieldChange(idx, e)}
                     className="hidden"
                   />
-
                   <label
-                    htmlFor={`color_code_${cat.id}`}
+                    htmlFor={`color_code_${idx}`}
                     className="cursor-pointer border mt-7 w-full h-9.5 my-1 rounded-md flex items-center justify-between px-4 bg-white shadow-sm hover:shadow-md transition"
                   >
                     <div className="flex items-center gap-2">
                       <FaPalette className="text-lg" />
                       <span className="font-medium">
-                        {t("Brand.Choose Color") || "Choose Color"}
+                        {t("Choose Color") || "Choose Color"}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="text-sm font-mono">{cat.color_code}</span>
+                      <span className="text-sm font-mono">
+                        {cat.color_code}
+                      </span>
                       <span
                         className="w-6 h-6 rounded-full border"
                         style={{ backgroundColor: cat.color_code }}
