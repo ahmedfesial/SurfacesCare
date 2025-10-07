@@ -215,7 +215,7 @@ export default function Cards({ filteredProducts }) {
                   </div>
 
                   <img
-                    src={product.image_url || defultProductImage}
+                    src={product.main_image || defultProductImage}
                     alt="Product"
                     className="w-full h-full object-cover"
                     loading="lazy"
